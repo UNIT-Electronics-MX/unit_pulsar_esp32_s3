@@ -11,7 +11,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
 
-project = 'UNIT NANO C6'
+project = 'UNIT PULSAR H2'
 copyright = '2024, Unit Electronics'
 author = 'Cesar Bautista'
 release = '0.0.1'
@@ -39,7 +39,7 @@ copybutton_only_copy_prompt_lines = False  # Copies all lines, including those w
 
 templates_path = ['_templates']
 html_theme_options = {
-    "repository_url": "https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_c6",
+    "repository_url": "https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_h2",
     "repository_branch": "main",  # Rama principal de tu repositorio
       "path_to_docs": "docs/",  # Ruta a la documentación dentro del repositorio
     "use_repository_button": True,  # Muestra un botón que enlaza al repositorio
@@ -57,3 +57,6 @@ latex_logo = "_static/Logo-UNIT_Web-04-800x182.png"
 html_css_files = [
     'custom.css',
 ]
+
+# PDF configuration
+pdf_documents = [('index', 'unit_pulsar_h2', 'UNIT PULSAR H2 Documentation', 'Unit Electronics')]
