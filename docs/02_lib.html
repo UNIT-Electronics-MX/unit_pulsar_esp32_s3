@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Installing packages - Micropython &#8212; UNIT PULSAR H2 0.0.1 documentation</title>
+    <title>ESP32-H2 MicroPython Installation &#8212; UNIT PULSAR H2 0.0.1 documentation</title>
   
   
   
@@ -49,6 +49,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/tabs.js?v=3030b3cb"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -171,7 +172,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="00_about.html">PULSAR H2 Development Board</a></li>
 <li class="toctree-l1"><a class="reference internal" href="01_setup.html">Desktop Environment</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Installing packages - Micropython</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">ESP32-H2 MicroPython Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02_1_esp-idf.html">ESP-IDF Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03_pinout.html">Development board</a></li>
 <li class="toctree-l1"><a class="reference internal" href="11_gpio.html">General Purpose Input/Output (GPIO) Pins</a></li>
@@ -383,7 +384,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Installing packages - Micropython</h1>
+    <h1>ESP32-H2 MicroPython Installation</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -393,17 +394,58 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-guide-using-mip-library">Installation Guide Using MIP Library</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">Requirements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-instructions">Installation Instructions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-installation-methods">Alternative Installation Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#esp32-h2-micropython-v1-0-complete-binary">ESP32-H2 MicroPython v1.0 - Complete Binary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-and-installation-files">Download and Installation Files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-methods">Installation Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-1-web-based-flashing-recommended-for-beginners">Method 1: Web-Based Flashing (Recommended for Beginners)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-automatic-flashing-script">Method 2: Automatic Flashing Script</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-3-manual-flashing-with-esptool">Method 3: Manual Flashing with ESPTool</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dualmcu-library">DualMCU Library</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connecting-to-micropython-repl">Connecting to MicroPython REPL</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#libraries-available">Libraries available</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabled-features-and-capabilities">Enabled Features and Capabilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpio-general-purpose-input-output">GPIO (General Purpose Input/Output)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adc-analog-to-digital-converter">ADC (Analog-to-Digital Converter)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#communication-protocols">Communication Protocols</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-configuration">Memory Configuration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-code-examples">Test Code Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-led-blink">Basic LED Blink</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adc-reading">ADC Reading</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i2c-communication">I2C Communication</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spi-communication">SPI Communication</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bluetooth-le-example">Bluetooth LE Example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-optimization">Performance Optimization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compile-to-mpy-optimized-bytecode">Compile to .mpy (Optimized Bytecode)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#technical-specifications">Technical Specifications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#esp32-h2-chip-features">ESP32-H2 Chip Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#firmware-versions">Firmware Versions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#library-installation-no-wi-fi-alternative">Library Installation (No Wi-Fi Alternative)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-library-installation">Manual Library Installation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-compiled-libraries">Pre-compiled Libraries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#available-libraries">Available Libraries</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-issues">Common Issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps-and-project-ideas">Next Steps and Project Ideas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beginner-projects">Beginner Projects</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intermediate-projects">Intermediate Projects</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-projects">Advanced Projects</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources-and-documentation">Resources and Documentation</a></li>
 </ul>
             </nav>
         </div>
@@ -415,117 +457,411 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="installing-packages-micropython">
-<h1>Installing packages - Micropython<a class="headerlink" href="#installing-packages-micropython" title="Link to this heading">#</a></h1>
-<p>This section will guide you through the installation process of the required libraries using
-the <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> package manager.</p>
-<section id="installation-guide-using-mip-library">
-<h2>Installation Guide Using MIP Library<a class="headerlink" href="#installation-guide-using-mip-library" title="Link to this heading">#</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <cite>mip</cite> library is utilized to install other libraries on the PULSAR H2 board.</p>
-</div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>The ESP32-H2 does not support Wi-Fi. For library installation, you’ll need to use alternative methods or a gateway device with Wi-Fi connectivity.</p>
-</div>
-<section id="requirements">
-<h3>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h3>
+  <section id="esp32-h2-micropython-installation">
+<h1>ESP32-H2 MicroPython Installation<a class="headerlink" href="#esp32-h2-micropython-installation" title="Link to this heading">#</a></h1>
+<p>This section provides comprehensive instructions for installing and using MicroPython on the PULSAR H2 board with ESP32-H2 microcontroller.</p>
+<section id="esp32-h2-micropython-v1-0-complete-binary">
+<h2>ESP32-H2 MicroPython v1.0 - Complete Binary<a class="headerlink" href="#esp32-h2-micropython-v1-0-complete-binary" title="Link to this heading">#</a></h2>
+<section id="download-and-installation-files">
+<h3>Download and Installation Files<a class="headerlink" href="#download-and-installation-files" title="Link to this heading">#</a></h3>
+<p>The firmware is available in the following location:</p>
 <ul class="simple">
-<li><p>ESP32H2 device (PULSAR H2)</p></li>
-<li><p>Thonny IDE</p></li>
-<li><p>Computer with internet access for library download</p></li>
-<li><p>USB connection for file transfer</p></li>
+<li><dl class="simple">
+<dt><strong>ESP32H2_MicroPython_v1.0_Complete.bin</strong> (1,557,600 bytes)</dt><dd><ul>
+<li><p>Complete binary ready to flash from 0x0000</p></li>
+<li><p>Includes: Bootloader + Partition Table + MicroPython</p></li>
+<li><p><strong>Download</strong>: <a class="reference download internal" download="" href="_downloads/3a9a2cf65525c5993dc1342893649a9f/ESP32H2_Micropython_v1.0_cOMPLETE.BIN"><code class="xref download docutils literal notranslate"><span class="pre">ESP32H2</span> <span class="pre">MicroPython</span> <span class="pre">v1.0</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>flash_esp32h2.sh</strong></dt><dd><ul>
+<li><p>Automatic script to flash ESP32-H2</p></li>
+<li><p>Automatic port detection</p></li>
+<li><p>Connection verification</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>compile_py_to_mpy.sh</strong></dt><dd><ul>
+<li><p>Python to .mpy bytecode compiler</p></li>
+<li><p>Size and speed optimization</p></li>
+</ul>
+</dd>
+</dl>
+</li>
 </ul>
 </section>
-<section id="installation-instructions">
-<h3>Installation Instructions<a class="headerlink" href="#installation-instructions" title="Link to this heading">#</a></h3>
-<p>Follow the steps below to install the <cite>max1704x.py</cite> library:</p>
-</section>
-<section id="alternative-installation-methods">
-<h3>Alternative Installation Methods<a class="headerlink" href="#alternative-installation-methods" title="Link to this heading">#</a></h3>
-<p>Since the ESP32-H2 doesn’t support Wi-Fi, consider these alternatives for library installation:</p>
+<section id="installation-methods">
+<h3>Installation Methods<a class="headerlink" href="#installation-methods" title="Link to this heading">#</a></h3>
+<section id="method-1-web-based-flashing-recommended-for-beginners">
+<h4>Method 1: Web-Based Flashing (Recommended for Beginners)<a class="headerlink" href="#method-1-web-based-flashing-recommended-for-beginners" title="Link to this heading">#</a></h4>
+<p>Using <strong>ESPTool-JS Web Flasher</strong>:</p>
 <ol class="arabic simple">
-<li><p><strong>Pre-download libraries</strong>: Download libraries on a computer with internet access and transfer them to the ESP32-H2 via USB.</p></li>
-<li><p><strong>Use a gateway device</strong>: Use another microcontroller with Wi-Fi capability as a bridge to download libraries.</p></li>
-<li><p><strong>Manual installation</strong>: Download the library files manually and copy them to the ESP32-H2’s filesystem.</p></li>
+<li><p><strong>Open Web Flasher</strong>: Navigate to <a class="reference external" href="https://espressif.github.io/esptool-js/">https://espressif.github.io/esptool-js/</a></p></li>
+<li><p><strong>Connect Device</strong>: Connect your PULSAR H2 via USB-C</p></li>
+<li><p><strong>Device Detection</strong>: Click “Connect” and select your ESP32-H2 device</p></li>
+<li><p><strong>Configure Flashing Parameters</strong>:</p>
+<ul class="simple">
+<li><p><strong>Flash Address</strong>: <code class="docutils literal notranslate"><span class="pre">0x00000</span></code></p></li>
+<li><p><strong>Choose File</strong>: Select <code class="docutils literal notranslate"><span class="pre">ESP32H2_MicroPython_v1.0_Complete.bin</span></code></p></li>
+<li><p><strong>Chip</strong>: ESP32-H2</p></li>
+<li><p><strong>Baudrate</strong>: 115200</p></li>
+<li><p><strong>Flash Mode</strong>: DIO</p></li>
+<li><p><strong>Flash Size</strong>: 4MB</p></li>
+<li><p><strong>Reset Method</strong>: Hard Reset</p></li>
+</ul>
+</li>
+<li><p><strong>Start Flashing</strong>: Click “Program” button</p></li>
+<li><p><strong>Wait for completion</strong>: Process takes approximately 2-3 minutes</p></li>
 </ol>
+</section>
+<section id="method-2-automatic-flashing-script">
+<h4>Method 2: Automatic Flashing Script<a class="headerlink" href="#method-2-automatic-flashing-script" title="Link to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make script executable</span>
+chmod<span class="w"> </span>+x<span class="w"> </span>flash_esp32h2.sh
+
+<span class="c1"># Run automatic flashing</span>
+./flash_esp32h2.sh
+</pre></div>
+</div>
+</section>
+<section id="method-3-manual-flashing-with-esptool">
+<h4>Method 3: Manual Flashing with ESPTool<a class="headerlink" href="#method-3-manual-flashing-with-esptool" title="Link to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install esptool if not already installed</span>
+pip<span class="w"> </span>install<span class="w"> </span>esptool
+
+<span class="c1"># Flash the complete binary</span>
+python3<span class="w"> </span>-m<span class="w"> </span>esptool<span class="w"> </span>--chip<span class="w"> </span>esp32h2<span class="w"> </span>--port<span class="w"> </span>/dev/ttyACM0<span class="w"> </span>--baud<span class="w"> </span><span class="m">460800</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--before<span class="w"> </span>default_reset<span class="w"> </span>--after<span class="w"> </span>hard_reset<span class="w"> </span>write_flash<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--flash_mode<span class="w"> </span>dio<span class="w"> </span>--flash_freq<span class="w"> </span>48m<span class="w"> </span>--flash_size<span class="w"> </span>4MB<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>0x0<span class="w"> </span>ESP32H2_MicroPython_v1.0_Complete.bin
+</pre></div>
+</div>
+</section>
+</section>
+<section id="connecting-to-micropython-repl">
+<h3>Connecting to MicroPython REPL<a class="headerlink" href="#connecting-to-micropython-repl" title="Link to this heading">#</a></h3>
+<p>After successful flashing, connect to the MicroPython REPL:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Linux/macOS</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Windows</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">Thonny IDE</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using screen</span>
+screen<span class="w"> </span>/dev/ttyACM0<span class="w"> </span><span class="m">115200</span>
+
+<span class="c1"># Using miniterm</span>
+python3<span class="w"> </span>-m<span class="w"> </span>serial.tools.miniterm<span class="w"> </span>/dev/ttyACM0<span class="w"> </span><span class="m">115200</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using PuTTY or built-in serial terminal</span>
+<span class="c1"># Port: COM3 (check Device Manager)</span>
+<span class="c1"># Baud Rate: 115200</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1. Open Thonny IDE
+2. Go to Tools &gt; Options &gt; Interpreter
+3. Select &quot;MicroPython (ESP32)&quot;
+4. Choose correct COM port
+5. Click OK and connect
+</pre></div>
+</div>
+</div></div>
+</section>
+</section>
+<section id="enabled-features-and-capabilities">
+<h2>Enabled Features and Capabilities<a class="headerlink" href="#enabled-features-and-capabilities" title="Link to this heading">#</a></h2>
+<section id="gpio-general-purpose-input-output">
+<h3>GPIO (General Purpose Input/Output)<a class="headerlink" href="#gpio-general-purpose-input-output" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Available pins</strong>: GPIO 0-27 (28 pins total)</p></li>
+<li><p><strong>Recommended pins for LED</strong>: 4, 5, 6, 7, 10, 11, 22, 23, 24, 25</p></li>
+<li><p><strong>Configuration</strong>: Input/Output, Pull-up/Pull-down</p></li>
+</ul>
+</section>
+<section id="adc-analog-to-digital-converter">
+<h3>ADC (Analog-to-Digital Converter)<a class="headerlink" href="#adc-analog-to-digital-converter" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Channels</strong>: 5 available channels</p></li>
+<li><p><strong>ADC pins</strong>: GPIO1, GPIO2, GPIO3, GPIO4, GPIO5</p></li>
+<li><p><strong>Resolution</strong>: 12 bits</p></li>
+<li><p><strong>Voltage Range</strong>: 0-3.3V</p></li>
+</ul>
+</section>
+<section id="communication-protocols">
+<h3>Communication Protocols<a class="headerlink" href="#communication-protocols" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>UART</strong>: REPL enabled via USB-Serial/JTAG</p></li>
+<li><p><strong>I2C</strong>: Hardware I2C available on GPIO12 (SDA) and GPIO22 (SCL)</p></li>
+<li><p><strong>SPI</strong>: Hardware SPI available</p></li>
+<li><p><strong>Bluetooth LE</strong>: Fully functional Bluetooth 5.0 Low Energy</p></li>
+<li><p><strong>IEEE 802.15.4</strong>: For Thread/Zigbee protocols</p></li>
+</ul>
+</section>
+<section id="memory-configuration">
+<h3>Memory Configuration<a class="headerlink" href="#memory-configuration" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Flash</strong>: 4MB configured</p></li>
+<li><p><strong>RAM</strong>: ~256KB available for applications</p></li>
+<li><dl class="simple">
+<dt><strong>Partitions</strong>:</dt><dd><ul>
+<li><p>NVS: 24KB</p></li>
+<li><p>PHY: 4KB</p></li>
+<li><p>App: 1984KB</p></li>
+<li><p>VFS: 2MB</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+<section id="test-code-examples">
+<h2>Test Code Examples<a class="headerlink" href="#test-code-examples" title="Link to this heading">#</a></h2>
+<section id="basic-led-blink">
+<h3>Basic LED Blink<a class="headerlink" href="#basic-led-blink" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">machine</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="c1"># Use GPIO4 which is connected to the built-in LED</span>
+<span class="n">led</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">led</span><span class="o">.</span><span class="n">on</span><span class="p">()</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">led</span><span class="o">.</span><span class="n">off</span><span class="p">()</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="adc-reading">
+<h3>ADC Reading<a class="headerlink" href="#adc-reading" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">machine</span>
+
+<span class="c1"># ADC on GPIO1</span>
+<span class="n">adc</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">ADC</span><span class="p">(</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">adc</span><span class="o">.</span><span class="n">atten</span><span class="p">(</span><span class="n">machine</span><span class="o">.</span><span class="n">ADC</span><span class="o">.</span><span class="n">ATTN_11DB</span><span class="p">)</span>  <span class="c1"># 0-3.3V range</span>
+
+<span class="c1"># Read value</span>
+<span class="n">value</span> <span class="o">=</span> <span class="n">adc</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">voltage</span> <span class="o">=</span> <span class="n">value</span> <span class="o">*</span> <span class="mf">3.3</span> <span class="o">/</span> <span class="mi">4095</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ADC Value: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">, Voltage: </span><span class="si">{</span><span class="n">voltage</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">V&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="i2c-communication">
+<h3>I2C Communication<a class="headerlink" href="#i2c-communication" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">machine</span>
+
+<span class="c1"># Initialize I2C on PULSAR H2 pins</span>
+<span class="n">i2c</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">I2C</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">scl</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">22</span><span class="p">),</span> <span class="n">sda</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span> <span class="n">freq</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+
+<span class="c1"># Scan for I2C devices</span>
+<span class="n">devices</span> <span class="o">=</span> <span class="n">i2c</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;I2C devices found: </span><span class="si">{</span><span class="p">[</span><span class="nb">hex</span><span class="p">(</span><span class="n">device</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">device</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">devices</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="spi-communication">
+<h3>SPI Communication<a class="headerlink" href="#spi-communication" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">machine</span>
+
+<span class="c1"># Initialize SPI for microSD (PULSAR H2 configuration)</span>
+<span class="n">spi</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">SPI</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span>
+                  <span class="n">sck</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>   <span class="c1"># Clock</span>
+                  <span class="n">mosi</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>  <span class="c1"># Data Out</span>
+                  <span class="n">miso</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>  <span class="c1"># Data In</span>
+
+<span class="n">cs</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>  <span class="c1"># Chip Select</span>
+<span class="n">cs</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Deselect initially</span>
+</pre></div>
+</div>
+</section>
+<section id="bluetooth-le-example">
+<h3>Bluetooth LE Example<a class="headerlink" href="#bluetooth-le-example" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">bluetooth</span>
+
+<span class="c1"># Initialize Bluetooth LE</span>
+<span class="n">ble</span> <span class="o">=</span> <span class="n">bluetooth</span><span class="o">.</span><span class="n">BLE</span><span class="p">()</span>
+<span class="n">ble</span><span class="o">.</span><span class="n">active</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Start advertising</span>
+<span class="n">ble</span><span class="o">.</span><span class="n">gap_advertise</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x02\x01\x02\x0b\t</span><span class="s1">PULSAR_H2&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bluetooth LE advertising started&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="performance-optimization">
+<h2>Performance Optimization<a class="headerlink" href="#performance-optimization" title="Link to this heading">#</a></h2>
+<section id="compile-to-mpy-optimized-bytecode">
+<h3>Compile to .mpy (Optimized Bytecode)<a class="headerlink" href="#compile-to-mpy-optimized-bytecode" title="Link to this heading">#</a></h3>
+<p>For better performance and reduced memory usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install mpy-cross compiler</span>
+pip<span class="w"> </span>install<span class="w"> </span>mpy-cross
+
+<span class="c1"># Compile single file</span>
+./compile_py_to_mpy.sh<span class="w"> </span>my_script.py
+
+<span class="c1"># Compile with optimization level 2</span>
+./compile_py_to_mpy.sh<span class="w"> </span>-O2<span class="w"> </span>my_script.py
+
+<span class="c1"># Compile entire directory</span>
+./compile_py_to_mpy.sh<span class="w"> </span>src/
+</pre></div>
+</div>
+</section>
+</section>
+<section id="technical-specifications">
+<h2>Technical Specifications<a class="headerlink" href="#technical-specifications" title="Link to this heading">#</a></h2>
+<section id="esp32-h2-chip-features">
+<h3>ESP32-H2 Chip Features<a class="headerlink" href="#esp32-h2-chip-features" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Architecture</strong>: RISC-V single-core 96MHz</p></li>
+<li><p><strong>WiFi</strong>: Not available (by chip design)</p></li>
+<li><p><strong>Bluetooth</strong>: Full LE 5.0 support</p></li>
+<li><p><strong>IEEE 802.15.4</strong>: Thread/Zigbee/Matter protocols</p></li>
+<li><p><strong>Security</strong>: Crypto accelerator, Secure boot</p></li>
+<li><p><strong>Power Management</strong>: Ultra-low power modes</p></li>
+</ul>
+</section>
+<section id="firmware-versions">
+<h3>Firmware Versions<a class="headerlink" href="#firmware-versions" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>MicroPython</strong>: v1.23.0+ (custom build for ESP32-H2)</p></li>
+<li><p><strong>ESP-IDF</strong>: 5.4.1</p></li>
+<li><p><strong>Compiler</strong>: GCC 14.2.0</p></li>
+<li><p><strong>Build Date</strong>: September 7, 2025</p></li>
+<li><p><strong>Version</strong>: 1.0 (First Official Release)</p></li>
+</ul>
+</section>
+</section>
+<section id="library-installation-no-wi-fi-alternative">
+<h2>Library Installation (No Wi-Fi Alternative)<a class="headerlink" href="#library-installation-no-wi-fi-alternative" title="Link to this heading">#</a></h2>
+<p>Since ESP32-H2 doesn’t support Wi-Fi, use these methods for library installation:</p>
+<section id="manual-library-installation">
+<h3>Manual Library Installation<a class="headerlink" href="#manual-library-installation" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example: Manual library installation</span>
-<span class="c1"># Download these libraries manually and copy to your ESP32-H2:</span>
+<span class="c1"># Download these libraries manually and copy to ESP32-H2:</span>
 <span class="c1"># - max1704x.py from UNIT-Electronics/MAX1704X_lib</span>
-<span class="c1"># - oled.py from compatible micropython libraries</span>
+<span class="c1"># - ssd1306.py for OLED displays</span>
 <span class="c1"># - sdcard.py for SD card support</span>
 
-<span class="c1"># After copying files manually:</span>
+<span class="c1"># After copying files manually via USB:</span>
 <span class="kn">import</span> <span class="nn">max1704x</span>
-<span class="kn">import</span> <span class="nn">oled</span>
+<span class="kn">import</span> <span class="nn">ssd1306</span>
 <span class="kn">import</span> <span class="nn">sdcard</span>
 </pre></div>
 </div>
 </section>
-</section>
-<section id="dualmcu-library">
-<h2>DualMCU Library<a class="headerlink" href="#dualmcu-library" title="Link to this heading">#</a></h2>
-<p>Firstly, you need install Thonny IDE. You can download it from the <a class="reference external" href="https://thonny.org/">Thonny website</a>.</p>
+<section id="pre-compiled-libraries">
+<h3>Pre-compiled Libraries<a class="headerlink" href="#pre-compiled-libraries" title="Link to this heading">#</a></h3>
 <ol class="arabic simple">
-<li><p>Open <a class="reference external" href="https://thonny.org/">Thonny</a>.</p></li>
-<li><p>Navigate to <strong>Tools</strong> -&gt; <strong>Manage Packages</strong>.</p></li>
-<li><p>Search for <code class="docutils literal notranslate"><span class="pre">dualmcu</span></code> and click <strong>Install</strong>.</p></li>
+<li><p><strong>Download on computer</strong>: Use a computer with internet access</p></li>
+<li><p><strong>Transfer via USB</strong>: Copy .py or .mpy files to ESP32-H2</p></li>
+<li><p><strong>Use Thonny file manager</strong>: Drag and drop files to device</p></li>
 </ol>
-<figure class="align-center" id="id1">
-<span id="figure-dualmcu-libary"></span><a class="reference internal image-reference" href="_images/dualmcu_library.png"><img alt="DualMCU Library" src="_images/dualmcu_library.png" style="width: 60%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 11 </span><span class="caption-text">DualMCU Library</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<ol class="arabic simple" start="4">
-<li><p>Successfully installed the library.</p></li>
-</ol>
-<figure class="align-center" id="id2">
-<span id="figure-dualmcu-libary-success"></span><a class="reference internal image-reference" href="_images/dualmcu_library_success.png"><img alt="DualMCU Library" src="_images/dualmcu_library_success.png" style="width: 60%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 12 </span><span class="caption-text">DualMCU Library Successfully Installed</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-<p>Alternatively, download the library from <a class="reference external" href="https://pypi.org/project/dualmcu/">dualmcu.py</a>.</p>
-<section id="usage">
-<h3>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h3>
-<p>The library provides a set of tools to help developers work with the DualMCU ONE board. The following are the main features of the library:</p>
+</section>
+<section id="available-libraries">
+<h3>Available Libraries<a class="headerlink" href="#available-libraries" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>I2C Support</strong>: The library provides support for I2C communication protocol, making it easy to interface with a wide range of sensors and devices.</p></li>
-<li><p><strong>Arduino Shields Compatibility</strong>: The library is compatible with Arduino Shields, making it easy to use a wide range of shields and accessories with the DualMCU ONE board.</p></li>
-<li><p><strong>SDcard Support</strong>: The library provides support for SD cards, allowing developers to easily read and write data to SD cards.</p></li>
+<li><p><strong>OLED Support</strong>: SSD1306 driver for I2C displays</p></li>
+<li><p><strong>SD Card</strong>: File system support for microSD</p></li>
+<li><p><strong>Sensors</strong>: I2C/SPI sensor libraries</p></li>
+<li><p><strong>Communication</strong>: Bluetooth LE utilities</p></li>
+<li><p><strong>Hardware</strong>: GPIO, ADC, PWM libraries</p></li>
 </ul>
-<p>Examples of the library usage:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">machine</span>
-<span class="kn">from</span> <span class="nn">dualmcu</span> <span class="kn">import</span> <span class="o">*</span>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt><strong>1. “Invalid pin” GPIO Error</strong></dt><dd><ul class="simple">
+<li><p>Fixed in MicroPython v1.0</p></li>
+<li><p>All GPIO 0-27 now work correctly</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>2. Connection Error During Flashing</strong></p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Verify connection</span>
+./flash_esp32h2.sh<span class="w"> </span>--verify
 
-<span class="n">i2c</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">SoftI2C</span><span class="p">(</span> <span class="n">scl</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">22</span><span class="p">),</span> <span class="n">sda</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">21</span><span class="p">))</span>
+<span class="c1"># Try specific port</span>
+./flash_esp32h2.sh<span class="w"> </span>/dev/ttyACM0
 
-<span class="n">oled</span> <span class="o">=</span> <span class="n">SSD1306_I2C</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="n">i2c</span><span class="p">)</span>
-
-<span class="n">oled</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">oled</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-
-<span class="n">oled</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">oled</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="n">oled</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;UNIT&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">oled</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="s1">&#39;ELECTRONICS&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
-
-<span class="n">oled</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># Check if device is in download mode</span>
+esptool.py<span class="w"> </span>--port<span class="w"> </span>/dev/ttyACM0<span class="w"> </span>chip_id
 </pre></div>
 </div>
-</section>
-</section>
-<section id="libraries-available">
-<h2>Libraries available<a class="headerlink" href="#libraries-available" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><a class="reference external" href="https://pypi.org/project/dualmcu/">Dualmcu</a> : The library provides a set of tools to help developers work with the DualMCU ONE board. The library is actively maintained and updated to provide the best experience for developers working with the DualMCU ONE board. For more information and updates, visit the <cite>dualmcu GitHub repository`</cite></p></li>
-<li><p><a class="reference external" href="https://pypi.org/project/ocks/">Ocks</a> : The library provides support for I2C communication protocol.</p></li>
-<li><p><a class="reference external" href="https://pypi.org/project/sdcard-lib/">SDcard-lib</a> : The library provides support for SD cards, allowing developers to easily read and write data to SD cards; all rights remain with the original author.</p></li>
+</div></blockquote>
+<p><strong>3. Serial Port Permissions (Linux)</strong></p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add user to dialout group</span>
+sudo<span class="w"> </span>usermod<span class="w"> </span>-a<span class="w"> </span>-G<span class="w"> </span>dialout<span class="w"> </span><span class="nv">$USER</span>
+<span class="c1"># Log out and back in after this change</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="simple">
+<dt><strong>4. Thonny Connection Issues</strong></dt><dd><ul class="simple">
+<li><p>Ensure correct interpreter: “MicroPython (ESP32)”</p></li>
+<li><p>Check COM port in device manager</p></li>
+<li><p>Try different baud rates: 115200, 9600</p></li>
 </ul>
-<p>The library is actively maintained and updated to provide the best experience for developers working with
-the DualMCU ONE board.</p>
+</dd>
+<dt><strong>5. Memory Issues</strong></dt><dd><ul class="simple">
+<li><p>Use .mpy compiled files</p></li>
+<li><p>Implement garbage collection: <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">gc;</span> <span class="pre">gc.collect()</span></code></p></li>
+<li><p>Monitor memory: <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">micropython;</span> <span class="pre">micropython.mem_info()</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</section>
+</section>
+<section id="next-steps-and-project-ideas">
+<h2>Next Steps and Project Ideas<a class="headerlink" href="#next-steps-and-project-ideas" title="Link to this heading">#</a></h2>
+<section id="beginner-projects">
+<h3>Beginner Projects<a class="headerlink" href="#beginner-projects" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>LED Control</strong>: RGB LED strips, status indicators</p></li>
+<li><p><strong>Sensor Reading</strong>: Temperature, humidity, light sensors</p></li>
+<li><p><strong>Display Output</strong>: OLED displays, status screens</p></li>
+<li><p><strong>Data Logging</strong>: SD card storage, sensor data</p></li>
+</ol>
+</section>
+<section id="intermediate-projects">
+<h3>Intermediate Projects<a class="headerlink" href="#intermediate-projects" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Bluetooth LE Communication</strong>: Mobile app integration</p></li>
+<li><p><strong>I2C Sensor Networks</strong>: Multiple sensor reading</p></li>
+<li><p><strong>IoT Data Collection</strong>: Local sensor hub</p></li>
+<li><p><strong>Real-time Monitoring</strong>: Battery, environmental data</p></li>
+</ol>
+</section>
+<section id="advanced-projects">
+<h3>Advanced Projects<a class="headerlink" href="#advanced-projects" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>IEEE 802.15.4 Networks</strong>: Thread/Zigbee implementation</p></li>
+<li><p><strong>Matter Protocol</strong>: Smart home device integration</p></li>
+<li><p><strong>Mesh Networks</strong>: Multi-device communication</p></li>
+<li><p><strong>Security Applications</strong>: Encrypted data transmission</p></li>
+</ol>
+</section>
+</section>
+<section id="resources-and-documentation">
+<h2>Resources and Documentation<a class="headerlink" href="#resources-and-documentation" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>MicroPython Official Docs</strong>: <a class="reference external" href="https://docs.micropython.org/">https://docs.micropython.org/</a></p></li>
+<li><p><strong>ESP32-H2 Datasheet</strong>: Available in project documentation</p></li>
+<li><p><strong>PULSAR H2 Hardware Guide</strong>: See hardware documentation section</p></li>
+<li><p><strong>Community Support</strong>: ESP32 MicroPython forums and GitHub</p></li>
+</ul>
+<p>—</p>
+<p><strong>Created by</strong>: ESP32-H2 MicroPython Development Team
+<strong>Documentation Version</strong>: 1.0
+<strong>Last Updated</strong>: October 2025</p>
 </section>
 </section>
 
@@ -574,17 +910,58 @@ the DualMCU ONE board.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-guide-using-mip-library">Installation Guide Using MIP Library</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">Requirements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-instructions">Installation Instructions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-installation-methods">Alternative Installation Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#esp32-h2-micropython-v1-0-complete-binary">ESP32-H2 MicroPython v1.0 - Complete Binary</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-and-installation-files">Download and Installation Files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-methods">Installation Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-1-web-based-flashing-recommended-for-beginners">Method 1: Web-Based Flashing (Recommended for Beginners)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-automatic-flashing-script">Method 2: Automatic Flashing Script</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-3-manual-flashing-with-esptool">Method 3: Manual Flashing with ESPTool</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dualmcu-library">DualMCU Library</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connecting-to-micropython-repl">Connecting to MicroPython REPL</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#libraries-available">Libraries available</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabled-features-and-capabilities">Enabled Features and Capabilities</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpio-general-purpose-input-output">GPIO (General Purpose Input/Output)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adc-analog-to-digital-converter">ADC (Analog-to-Digital Converter)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#communication-protocols">Communication Protocols</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-configuration">Memory Configuration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-code-examples">Test Code Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-led-blink">Basic LED Blink</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adc-reading">ADC Reading</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#i2c-communication">I2C Communication</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spi-communication">SPI Communication</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bluetooth-le-example">Bluetooth LE Example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-optimization">Performance Optimization</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compile-to-mpy-optimized-bytecode">Compile to .mpy (Optimized Bytecode)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#technical-specifications">Technical Specifications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#esp32-h2-chip-features">ESP32-H2 Chip Features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#firmware-versions">Firmware Versions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#library-installation-no-wi-fi-alternative">Library Installation (No Wi-Fi Alternative)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-library-installation">Manual Library Installation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-compiled-libraries">Pre-compiled Libraries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#available-libraries">Available Libraries</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#common-issues">Common Issues</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps-and-project-ideas">Next Steps and Project Ideas</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beginner-projects">Beginner Projects</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#intermediate-projects">Intermediate Projects</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advanced-projects">Advanced Projects</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources-and-documentation">Resources and Documentation</a></li>
 </ul>
   </nav></div>
 
