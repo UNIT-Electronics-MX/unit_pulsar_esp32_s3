@@ -56,7 +56,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '44_spi';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="WS2812 Control" href="55_WS2812.html" />
+    <link rel="next" title="Addressable RGB LED Control" href="55_RGB_LED.html" />
     <link rel="prev" title="I2C (Inter-Integrated Circuit)" href="33_i2c.html" />
     <link rel="icon" href="_static/3.png" type="image/x-icon">
     <link rel="shortcut icon" href="_static/3.png" type="image/x-icon">
@@ -179,8 +179,8 @@
 <li class="toctree-l1"><a class="reference internal" href="22_adc.html">Analog to Digital Conversion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="33_i2c.html">I2C (Inter-Integrated Circuit)</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">SPI (Serial Peripheral Interface)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="55_WS2812.html">WS2812 Control</a></li>
-<li class="toctree-l1"><a class="reference internal" href="66_communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="55_RGB_LED.html">Addressable RGB LED Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="66_communication.html">Wireless Communication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="report.html">How to Generate an Error Report</a></li>
 </ul>
 
@@ -396,6 +396,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spi-overview">SPI Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sdcard-spi">SDCard SPI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources">Resources</a></li>
 </ul>
             </nav>
         </div>
@@ -420,22 +421,22 @@ document.write(`
 <p>Ensure that the Micro SD contain data. We recommend saving multiple files beforehand to facilitate the use.
 Format the Micro SD card to FAT32 before using it with the ESP32-H2.</p>
 </div>
-<figure class="align-center" id="id1">
+<figure class="align-center" id="id3">
 <span id="figura-micro-sd-card"></span><a class="reference internal image-reference" href="_images/Micro-SD-Card-Pinout.png"><img alt="Micro SD Card Pinout" src="_images/Micro-SD-Card-Pinout.png" style="width: 40%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Micro SD Card Pinout</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Micro SD Card Pinout</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<figure class="align-center" id="id2">
+<figure class="align-center" id="id4">
 <span id="figura-micro-sd-card-reader"></span><a class="reference internal image-reference" href="_images/Lector-Micro-SD.jpg"><img alt="Micro SD Card reader" src="_images/Lector-Micro-SD.jpg" style="width: 40%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Micro SD Card external reader</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Micro SD Card external reader</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The conections are as follows:</p>
 <p>This table illustrates the connections between the SD card and the GPIO pins on the ESP32-H2 (PULSAR H2)</p>
-<div class="pst-scrollable-table-container"><table class="table table-center" id="id3">
-<caption><span class="caption-number">Table 6 </span><span class="caption-text">MicroSD SPI Connections</span><a class="headerlink" href="#id3" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table table-center" id="id5">
+<caption><span class="caption-number">Table 6 </span><span class="caption-text">MicroSD SPI Connections</span><a class="headerlink" href="#id5" title="Link to this table">#</a></caption>
 <colgroup>
 <col style="width: 17.6%" />
 <col style="width: 29.4%" />
@@ -457,7 +458,7 @@ Format the Micro SD card to FAT32 before using it with the ESP32-H2.</p>
 </tr>
 <tr class="row-odd"><td><p>2</p></td>
 <td><p>D3/CS (Chip Select)</p></td>
-<td><p>GPIO25</p></td>
+<td><p>GPIO11</p></td>
 <td><p>D10/SS</p></td>
 </tr>
 <tr class="row-even"><td><p>3</p></td>
@@ -498,7 +499,7 @@ Format the Micro SD card to FAT32 before using it with the ESP32-H2.</p>
 <p><strong>MicroSD Connection Notes:</strong></p>
 <ul class="simple">
 <li><p>The microSD card is connected via SPI interface using <strong>4 wires</strong> (MOSI, MISO, SCK, CS)</p></li>
-<li><p><strong>CS (Chip Select)</strong> is connected to <strong>GPIO25</strong> (D10/SS pin)</p></li>
+<li><p><strong>CS (Chip Select)</strong> is connected to <strong>GPIO11</strong> (D10/SS pin)</p></li>
 <li><p><strong>MOSI</strong> is connected to <strong>GPIO5</strong> (D11/MOSI pin)</p></li>
 <li><p><strong>MISO</strong> is connected to <strong>GPIO0</strong> (D12/MISO pin)</p></li>
 <li><p><strong>SCK</strong> is connected to <strong>GPIO4</strong> (D13/SCK pin)</p></li>
@@ -508,31 +509,59 @@ Format the Micro SD card to FAT32 before using it with the ESP32-H2.</p>
 </ul>
 </div>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">MicroPython</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">C++</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">esp-idf</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">machine</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">MicroPython</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">C++</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">esp-idf</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">machine</span> <span class="kn">import</span> <span class="n">Pin</span><span class="p">,</span> <span class="n">SPI</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">sdcard</span> <span class="kn">import</span> <span class="n">SDCard</span>
+<span class="kn">import</span> <span class="nn">sdcard</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
-<span class="c1"># Pines SPI para microSD</span>
+<span class="c1"># --- Custom pin configuration ---</span>
 <span class="n">MOSI_PIN</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="n">MISO_PIN</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">SCK_PIN</span> <span class="o">=</span> <span class="mi">4</span>
-<span class="n">CS_PIN</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">SCK_PIN</span>  <span class="o">=</span> <span class="mi">4</span>
+<span class="n">CS_PIN</span>   <span class="o">=</span> <span class="mi">11</span>
 
-<span class="c1"># Inicializar SPI</span>
-<span class="n">spi</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">SPI</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">500000</span><span class="p">,</span> <span class="n">polarity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-                  <span class="n">sck</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="n">SCK_PIN</span><span class="p">),</span>
-                  <span class="n">mosi</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="n">MOSI_PIN</span><span class="p">),</span>
-                  <span class="n">miso</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="n">MISO_PIN</span><span class="p">))</span>
+<span class="c1"># --- Initialize SPI with custom pins ---</span>
+<span class="n">spi</span> <span class="o">=</span> <span class="n">SPI</span><span class="p">(</span>
+    <span class="mi">1</span><span class="p">,</span>                   <span class="c1"># Bus SPI(1) = HSPI (can use remapped pins)</span>
+    <span class="n">baudrate</span><span class="o">=</span><span class="mi">5_000_000</span><span class="p">,</span>  <span class="c1"># 5 MHz is more stable with long cables or sensitive SDs</span>
+    <span class="n">polarity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">sck</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="n">SCK_PIN</span><span class="p">),</span>
+    <span class="n">mosi</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="n">MOSI_PIN</span><span class="p">),</span>
+    <span class="n">miso</span><span class="o">=</span><span class="n">Pin</span><span class="p">(</span><span class="n">MISO_PIN</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="c1"># Inicializar tarjeta SD</span>
-<span class="n">sd</span> <span class="o">=</span> <span class="n">SDCard</span><span class="p">(</span><span class="n">spi</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="n">CS_PIN</span><span class="p">))</span>
+<span class="c1"># --- Chip Select pin ---</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">Pin</span><span class="p">(</span><span class="n">CS_PIN</span><span class="p">,</span> <span class="n">Pin</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>
 
-<span class="c1"># Montar la SD en el sistema de archivos</span>
-<span class="n">os</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="n">sd</span><span class="p">,</span> <span class="s2">&quot;/sd&quot;</span><span class="p">)</span>
+<span class="c1"># --- Initialize SD card ---</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">sd</span> <span class="o">=</span> <span class="n">sdcard</span><span class="o">.</span><span class="n">SDCard</span><span class="p">(</span><span class="n">spi</span><span class="p">,</span> <span class="n">cs</span><span class="p">)</span>
+    <span class="n">vfs</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">VfsFat</span><span class="p">(</span><span class="n">sd</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="n">vfs</span><span class="p">,</span> <span class="s2">&quot;/sd&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;microSD mounted successfully at /sd</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="c1"># Listar archivos y directorios en la SD</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Archivos en la SD:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;/sd&quot;</span><span class="p">))</span>
+    <span class="c1"># --- List contents ---</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Contents of /sd:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;/sd&quot;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; -&quot;</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span>
+
+    <span class="c1"># --- Read/write test ---</span>
+    <span class="n">test_path</span> <span class="o">=</span> <span class="s2">&quot;/sd/test.txt&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">test_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Hello from ESP32 with custom SPI pins!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">File created: </span><span class="si">{</span><span class="n">test_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">test_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">File contents:&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error initializing SD card:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+<span class="c1"># --- Infinite loop ---</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;SPI.h&gt;</span>
@@ -542,70 +571,70 @@ Format the Micro SD card to FAT32 before using it with the ESP32-H2.</p>
 <span class="cp">#define MOSI_PIN 5</span>
 <span class="cp">#define MISO_PIN 0</span>
 <span class="cp">#define SCK_PIN 4</span>
-<span class="cp">#define CS_PIN 25</span>
+<span class="cp">#define CS_PIN 11</span>
 
 <span class="n">File</span><span class="w"> </span><span class="n">myFile</span><span class="p">;</span>
 
 <span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
-<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">Serial</span><span class="p">)</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="c1">// Esperar a que el puerto serie esté listo</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">Serial</span><span class="p">)</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="c1">// Wait for serial port to be ready</span>
 
 <span class="w">  </span><span class="n">SPI</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">SCK_PIN</span><span class="p">,</span><span class="w"> </span><span class="n">MISO_PIN</span><span class="p">,</span><span class="w"> </span><span class="n">MOSI_PIN</span><span class="p">,</span><span class="w"> </span><span class="n">CS_PIN</span><span class="p">);</span>
 
-<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Inicializando tarjeta SD...&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Initializing SD card...&quot;</span><span class="p">);</span>
 
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">SD</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">CS_PIN</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Error al inicializar la tarjeta SD.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Error initializing SD card.&quot;</span><span class="p">);</span>
 <span class="w">    </span><span class="k">return</span><span class="p">;</span>
 <span class="w">  </span><span class="p">}</span>
 
-<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Tarjeta SD inicializada correctamente.&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;SD card initialized successfully.&quot;</span><span class="p">);</span>
 
-<span class="w">  </span><span class="c1">// Listar archivos</span>
-<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Archivos en la SD:&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// List files</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Files on SD card:&quot;</span><span class="p">);</span>
 <span class="w">  </span><span class="n">listDir</span><span class="p">(</span><span class="n">SD</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 
-<span class="w">  </span><span class="c1">// Crear y escribir en el archivo</span>
+<span class="w">  </span><span class="c1">// Create and write to file</span>
 <span class="w">  </span><span class="n">myFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SD</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/test.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">FILE_WRITE</span><span class="p">);</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">myFile</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">myFile</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Hola, Arduino en SD!&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="n">myFile</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Esto es una prueba de escritura.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">myFile</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Hello, Arduino on SD!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">myFile</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;This is a write test.&quot;</span><span class="p">);</span>
 <span class="w">    </span><span class="n">myFile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
-<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Archivo escrito correctamente.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;File written successfully.&quot;</span><span class="p">);</span>
 <span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Error al abrir test.txt para escribir.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Error opening test.txt for writing.&quot;</span><span class="p">);</span>
 <span class="w">  </span><span class="p">}</span>
 
-<span class="w">  </span><span class="c1">// Leer el archivo</span>
+<span class="w">  </span><span class="c1">// Read the file</span>
 <span class="w">  </span><span class="n">myFile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SD</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="s">&quot;/test.txt&quot;</span><span class="p">);</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">myFile</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Contenido del archivo:&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">File contents:&quot;</span><span class="p">);</span>
 <span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">myFile</span><span class="p">.</span><span class="n">available</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
 <span class="w">      </span><span class="n">Serial</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">myFile</span><span class="p">.</span><span class="n">read</span><span class="p">());</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">    </span><span class="n">myFile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
 <span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Error al abrir test.txt para lectura.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Error opening test.txt for reading.&quot;</span><span class="p">);</span>
 <span class="w">  </span><span class="p">}</span>
 
-<span class="w">  </span><span class="c1">// Volver a listar archivos</span>
-<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Archivos en la SD después de la escritura:&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// List files again</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Files on SD card after writing:&quot;</span><span class="p">);</span>
 <span class="w">  </span><span class="n">listDir</span><span class="p">(</span><span class="n">SD</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="c1">// Nada en el loop</span>
+<span class="w">  </span><span class="c1">// Nothing in the loop</span>
 <span class="p">}</span>
 
-<span class="c1">// Función para listar archivos y carpetas</span>
+<span class="c1">// Function to list files and folders</span>
 <span class="kt">void</span><span class="w"> </span><span class="nf">listDir</span><span class="p">(</span><span class="n">fs</span><span class="o">::</span><span class="n">FS</span><span class="w"> </span><span class="o">&amp;</span><span class="n">fs</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dirname</span><span class="p">,</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">levels</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="n">File</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fs</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">dirname</span><span class="p">);</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">root</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Error al abrir el directorio&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Error opening directory&quot;</span><span class="p">);</span>
 <span class="w">    </span><span class="k">return</span><span class="p">;</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">root</span><span class="p">.</span><span class="n">isDirectory</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;No es un directorio&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Not a directory&quot;</span><span class="p">);</span>
 <span class="w">    </span><span class="k">return</span><span class="p">;</span>
 <span class="w">  </span><span class="p">}</span>
 
@@ -711,13 +740,19 @@ Format the Micro SD card to FAT32 before using it with the ESP32-H2.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<figure class="align-center" id="id4">
+<figure class="align-center" id="id6">
 <a class="reference internal image-reference" href="_images/menuconfig.png"><img alt="ESP-IDF" src="_images/menuconfig.png" style="width: 90%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 17 </span><span class="caption-text">ESP-IDF Menuconfig SD SPI Configuration</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">ESP-IDF Menuconfig SD SPI Configuration</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </div></div>
+</section>
+<section id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a href="#id1"><span class="problematic" id="id2">`</span></a>MicroPython SDCard Library &lt;</p></li>
+</ul>
 </section>
 </section>
 
@@ -742,11 +777,11 @@ Format the Micro SD card to FAT32 before using it with the ESP32-H2.</p>
       </div>
     </a>
     <a class="right-next"
-       href="55_WS2812.html"
+       href="55_RGB_LED.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">WS2812 Control</p>
+        <p class="prev-next-title">Addressable RGB LED Control</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -768,6 +803,7 @@ Format the Micro SD card to FAT32 before using it with the ESP32-H2.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spi-overview">SPI Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sdcard-spi">SDCard SPI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources">Resources</a></li>
 </ul>
   </nav></div>
 

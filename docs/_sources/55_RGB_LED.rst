@@ -1,11 +1,11 @@
-WS2812 Control 
-=================
-Harness the power of WS1280 LED strips with the PULSAR  H2 board. Learn how to control RGB LED strips and create dazzling lighting effects using MicroPython.
+Addressable RGB LED Control 
+============================
+Harness the power of addressable RGB LED strips with the PULSAR H2 board. Learn how to control intelligent RGB LED strips and create dazzling lighting effects using MicroPython.
 
-This section describes how to control WS2812 LED strips using the PULSAR  H2 board.
-The PULSAR  H2 board has a GPIO pin embebbed connected to the single WS2812 LED.
+This section describes how to control addressable RGB LED strips (WS2812/WS2811 compatible) using the PULSAR H2 board.
+The PULSAR H2 board has a GPIO pin embedded connected to a single addressable RGB LED.
 
-.. list-table:: Pin Mapping for WS2812
+.. list-table:: Pin Mapping for Addressable RGB LED
    :widths: 10 10
    :header-rows: 1
    :align: center
@@ -22,12 +22,12 @@ The PULSAR  H2 board has a GPIO pin embebbed connected to the single WS2812 LED.
    :alt: rgb led
    :width: 40%
 
-   WS28xx LED Strip
+   Addressable RGB LED Strip
 
 Code Example
 ------------
 
-Below is an example that demonstrates how to control WS1280 LED strips using the  PULSAR  H2 board
+Below is an example that demonstrates how to control addressable RGB LED strips using the PULSAR H2 board
 
 .. tabs::
 
@@ -37,21 +37,32 @@ Below is an example that demonstrates how to control WS1280 LED strips using the
 
          from machine import Pin
          from neopixel import NeoPixel
-         np = NeoPixel(Pin(8), 1)
-         np[0] = (255, 128, 0) # set to red, full brightness
-
-         np.write()
+         
+         # Initialize addressable RGB LED on GPIO8
+         rgb_led = NeoPixel(Pin(8), 1)
+         
+         # Set color (Red, Green, Blue) - orange color
+         rgb_led[0] = (255, 128, 0) 
+         
+         # Apply the color change
+         rgb_led.write()
 
    .. tab:: C++
 
       .. code-block:: c++
 
          #include <Adafruit_NeoPixel.h>
-         #define PIN 8
-         Adafruit_NeoPixel strip = Adafruit_NeoPixel(1, PIN, NEO_GRB + NEO_KHZ800);
+         
+         #define RGB_LED_PIN 8
+         #define NUM_LEDS 1
+         
+         // Initialize addressable RGB LED strip
+         Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, RGB_LED_PIN, NEO_GRB + NEO_KHZ800);
+         
          void setup() {
             strip.begin();
-            strip.setPixelColor(0, 255, 128, 0); // set to red, full brightness
+            // Set color (Red, Green, Blue) - orange color  
+            strip.setPixelColor(0, 255, 128, 0);
             strip.show();
          }
    .. tab:: esp-idf
@@ -118,5 +129,7 @@ Below is an example that demonstrates how to control WS1280 LED strips using the
 
 ..  tip::
   
-    for more information on the NeoPixel library, refer to the `NeoPixel Library Documentation <https://github.com/lvidarte/esp8266/wiki/MicroPython:-NeoPixels>`_.
+    **Compatibility Note**: This addressable RGB LED is compatible with WS2812/WS2811 protocols. For more information on the MicroPython implementation, refer to the `NeoPixel Library Documentation <https://github.com/lvidarte/esp8266/wiki/MicroPython:-NeoPixels>`_.
+    
+    **Supported Protocols**: WS2812, WS2812B, WS2811, SK6812 and other compatible addressable RGB LEDs.
 

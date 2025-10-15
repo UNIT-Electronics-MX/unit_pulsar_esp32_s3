@@ -179,8 +179,8 @@
 <li class="toctree-l1"><a class="reference internal" href="22_adc.html">Analog to Digital Conversion</a></li>
 <li class="toctree-l1"><a class="reference internal" href="33_i2c.html">I2C (Inter-Integrated Circuit)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="44_spi.html">SPI (Serial Peripheral Interface)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="55_WS2812.html">WS2812 Control</a></li>
-<li class="toctree-l1"><a class="reference internal" href="66_communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="55_RGB_LED.html">Addressable RGB LED Control</a></li>
+<li class="toctree-l1"><a class="reference internal" href="66_communication.html">Wireless Communication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="report.html">How to Generate an Error Report</a></li>
 </ul>
 
@@ -397,9 +397,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#esp32-h2-micropython-v1-0-complete-binary">ESP32-H2 MicroPython v1.0 - Complete Binary</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-and-installation-files">Download and Installation Files</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-methods">Installation Methods</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-1-web-based-flashing-recommended-for-beginners">Method 1: Web-Based Flashing (Recommended for Beginners)</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-automatic-flashing-script">Method 2: Automatic Flashing Script</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-3-manual-flashing-with-esptool">Method 3: Manual Flashing with ESPTool</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#web-based-flashing-recommended-for-beginners">Web-Based Flashing (Recommended for Beginners)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-flashing-with-esptool">Manual Flashing with ESPTool</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connecting-to-micropython-repl">Connecting to MicroPython REPL</a></li>
@@ -496,8 +495,8 @@ document.write(`
 </section>
 <section id="installation-methods">
 <h3>Installation Methods<a class="headerlink" href="#installation-methods" title="Link to this heading">#</a></h3>
-<section id="method-1-web-based-flashing-recommended-for-beginners">
-<h4>Method 1: Web-Based Flashing (Recommended for Beginners)<a class="headerlink" href="#method-1-web-based-flashing-recommended-for-beginners" title="Link to this heading">#</a></h4>
+<section id="web-based-flashing-recommended-for-beginners">
+<h4>Web-Based Flashing (Recommended for Beginners)<a class="headerlink" href="#web-based-flashing-recommended-for-beginners" title="Link to this heading">#</a></h4>
 <p>Using <strong>ESPTool-JS Web Flasher</strong>:</p>
 <ol class="arabic simple">
 <li><p><strong>Open Web Flasher</strong>: Navigate to <a class="reference external" href="https://espressif.github.io/esptool-js/">https://espressif.github.io/esptool-js/</a></p></li>
@@ -518,18 +517,8 @@ document.write(`
 <li><p><strong>Wait for completion</strong>: Process takes approximately 2-3 minutes</p></li>
 </ol>
 </section>
-<section id="method-2-automatic-flashing-script">
-<h4>Method 2: Automatic Flashing Script<a class="headerlink" href="#method-2-automatic-flashing-script" title="Link to this heading">#</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make script executable</span>
-chmod<span class="w"> </span>+x<span class="w"> </span>flash_esp32h2.sh
-
-<span class="c1"># Run automatic flashing</span>
-./flash_esp32h2.sh
-</pre></div>
-</div>
-</section>
-<section id="method-3-manual-flashing-with-esptool">
-<h4>Method 3: Manual Flashing with ESPTool<a class="headerlink" href="#method-3-manual-flashing-with-esptool" title="Link to this heading">#</a></h4>
+<section id="manual-flashing-with-esptool">
+<h4>Manual Flashing with ESPTool<a class="headerlink" href="#manual-flashing-with-esptool" title="Link to this heading">#</a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install esptool if not already installed</span>
 pip<span class="w"> </span>install<span class="w"> </span>esptool
 
@@ -546,16 +535,19 @@ python3<span class="w"> </span>-m<span class="w"> </span>esptool<span class="w">
 <h3>Connecting to MicroPython REPL<a class="headerlink" href="#connecting-to-micropython-repl" title="Link to this heading">#</a></h3>
 <p>After successful flashing, connect to the MicroPython REPL:</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Linux/macOS</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Windows</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">Thonny IDE</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using screen</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Windows</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Linux/macOS</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">Thonny IDE</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using PuTTY or built-in serial terminal</span>
+<span class="c1"># Port: COM3 (check Device Manager)</span>
+<span class="c1"># Baud Rate: 115200</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using picocom</span>
+picocom<span class="w"> </span>-b<span class="w"> </span><span class="m">115200</span><span class="w"> </span>/dev/ttyACM0
+
+<span class="c1"># Using screen</span>
 screen<span class="w"> </span>/dev/ttyACM0<span class="w"> </span><span class="m">115200</span>
 
 <span class="c1"># Using miniterm</span>
 python3<span class="w"> </span>-m<span class="w"> </span>serial.tools.miniterm<span class="w"> </span>/dev/ttyACM0<span class="w"> </span><span class="m">115200</span>
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using PuTTY or built-in serial terminal</span>
-<span class="c1"># Port: COM3 (check Device Manager)</span>
-<span class="c1"># Baud Rate: 115200</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1. Open Thonny IDE
@@ -913,9 +905,8 @@ sudo<span class="w"> </span>usermod<span class="w"> </span>-a<span class="w"> </
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#esp32-h2-micropython-v1-0-complete-binary">ESP32-H2 MicroPython v1.0 - Complete Binary</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-and-installation-files">Download and Installation Files</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-methods">Installation Methods</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-1-web-based-flashing-recommended-for-beginners">Method 1: Web-Based Flashing (Recommended for Beginners)</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-automatic-flashing-script">Method 2: Automatic Flashing Script</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#method-3-manual-flashing-with-esptool">Method 3: Manual Flashing with ESPTool</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#web-based-flashing-recommended-for-beginners">Web-Based Flashing (Recommended for Beginners)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-flashing-with-esptool">Manual Flashing with ESPTool</a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connecting-to-micropython-repl">Connecting to MicroPython REPL</a></li>

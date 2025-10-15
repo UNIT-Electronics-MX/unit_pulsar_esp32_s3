@@ -28,7 +28,7 @@ The firmware is available in the following location:
 Installation Methods
 ~~~~~~~~~~~~~~~~~~~
 
-Method 1: Web-Based Flashing (Recommended for Beginners)
+Web-Based Flashing (Recommended for Beginners)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Using **ESPTool-JS Web Flasher**:
@@ -49,18 +49,7 @@ Using **ESPTool-JS Web Flasher**:
 5. **Start Flashing**: Click "Program" button
 6. **Wait for completion**: Process takes approximately 2-3 minutes
 
-Method 2: Automatic Flashing Script
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: bash
-
-   # Make script executable
-   chmod +x flash_esp32h2.sh
-   
-   # Run automatic flashing
-   ./flash_esp32h2.sh
-
-Method 3: Manual Flashing with ESPTool
+Manual Flashing with ESPTool
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
@@ -81,15 +70,6 @@ After successful flashing, connect to the MicroPython REPL:
 
 .. tabs::
 
-   .. tab:: Linux/macOS
-
-      .. code-block:: bash
-
-         # Using screen
-         screen /dev/ttyACM0 115200
-         
-         # Using miniterm
-         python3 -m serial.tools.miniterm /dev/ttyACM0 115200
 
    .. tab:: Windows
 
@@ -98,6 +78,23 @@ After successful flashing, connect to the MicroPython REPL:
          # Using PuTTY or built-in serial terminal
          # Port: COM3 (check Device Manager)
          # Baud Rate: 115200
+
+
+   .. tab:: Linux/macOS
+
+      .. code-block:: bash
+
+         # Using picocom
+         picocom -b 115200 /dev/ttyACM0
+
+         # Using screen
+         screen /dev/ttyACM0 115200
+         
+         # Using miniterm
+         python3 -m serial.tools.miniterm /dev/ttyACM0 115200
+
+
+
 
    .. tab:: Thonny IDE
 
