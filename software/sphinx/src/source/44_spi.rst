@@ -69,7 +69,7 @@ This table illustrates the connections between the SD card and the GPIO pins on 
      - ---
    * - 2
      - D3/CS (Chip Select)
-     - GPIO25
+     - GPIO11
      - D10/SS
    * - 3
      - CMD/MOSI
@@ -100,7 +100,7 @@ This table illustrates the connections between the SD card and the GPIO pins on 
    **MicroSD Connection Notes:**
    
    - The microSD card is connected via SPI interface using **4 wires** (MOSI, MISO, SCK, CS)
-   - **CS (Chip Select)** is connected to **GPIO25** (D10/SS pin)
+   - **CS (Chip Select)** is connected to **GPIO11** (D10/SS pin)
    - **MOSI** is connected to **GPIO5** (D11/MOSI pin)  
    - **MISO** is connected to **GPIO0** (D12/MISO pin)
    - **SCK** is connected to **GPIO4** (D13/SCK pin)
@@ -113,31 +113,59 @@ This table illustrates the connections between the SD card and the GPIO pins on 
 
     .. code-block:: python
 
-        import machine
+        from machine import Pin, SPI
         import os
-        from sdcard import SDCard
+        import sdcard
+        import time
 
-        # Pines SPI para microSD
+        # --- Custom pin configuration ---
         MOSI_PIN = 5
         MISO_PIN = 0
-        SCK_PIN = 4
-        CS_PIN = 25
+        SCK_PIN  = 4
+        CS_PIN   = 11
 
-        # Inicializar SPI
-        spi = machine.SPI(1, baudrate=500000, polarity=0, phase=0,
-                          sck=machine.Pin(SCK_PIN),
-                          mosi=machine.Pin(MOSI_PIN),
-                          miso=machine.Pin(MISO_PIN))
+        # --- Initialize SPI with custom pins ---
+        spi = SPI(
+            1,                   # Bus SPI(1) = HSPI (can use remapped pins)
+            baudrate=5_000_000,  # 5 MHz is more stable with long cables or sensitive SDs
+            polarity=0,
+            phase=0,
+            sck=Pin(SCK_PIN),
+            mosi=Pin(MOSI_PIN),
+            miso=Pin(MISO_PIN)
+        )
 
-        # Inicializar tarjeta SD
-        sd = SDCard(spi, machine.Pin(CS_PIN))
+        # --- Chip Select pin ---
+        cs = Pin(CS_PIN, Pin.OUT)
 
-        # Montar la SD en el sistema de archivos
-        os.mount(sd, "/sd")
+        # --- Initialize SD card ---
+        try:
+            sd = sdcard.SDCard(spi, cs)
+            vfs = os.VfsFat(sd)
+            os.mount(vfs, "/sd")
+            print("microSD mounted successfully at /sd\n")
 
-        # Listar archivos y directorios en la SD
-        print("Archivos en la SD:")
-        print(os.listdir("/sd"))
+            # --- List contents ---
+            print("Contents of /sd:")
+            for fname in os.listdir("/sd"):
+                print(" -", fname)
+
+            # --- Read/write test ---
+            test_path = "/sd/test.txt"
+            with open(test_path, "w") as f:
+                f.write("Hello from ESP32 with custom SPI pins!\n")
+            print(f"\nFile created: {test_path}")
+
+            with open(test_path, "r") as f:
+                print("\nFile contents:")
+                print(f.read())
+
+        except Exception as e:
+            print("Error initializing SD card:", e)
+
+        # --- Infinite loop ---
+        while True:
+            time.sleep(1)
    
 
   .. tab:: C++
@@ -151,70 +179,70 @@ This table illustrates the connections between the SD card and the GPIO pins on 
       #define MOSI_PIN 5
       #define MISO_PIN 0
       #define SCK_PIN 4
-      #define CS_PIN 25
+      #define CS_PIN 11
 
       File myFile;
 
       void setup() {
         Serial.begin(115200);
-        while (!Serial) ; // Esperar a que el puerto serie esté listo
+        while (!Serial) ; // Wait for serial port to be ready
 
         SPI.begin(SCK_PIN, MISO_PIN, MOSI_PIN, CS_PIN);
 
-        Serial.println("Inicializando tarjeta SD...");
+        Serial.println("Initializing SD card...");
 
         if (!SD.begin(CS_PIN)) {
-          Serial.println("Error al inicializar la tarjeta SD.");
+          Serial.println("Error initializing SD card.");
           return;
         }
 
-        Serial.println("Tarjeta SD inicializada correctamente.");
+        Serial.println("SD card initialized successfully.");
 
-        // Listar archivos
-        Serial.println("Archivos en la SD:");
+        // List files
+        Serial.println("Files on SD card:");
         listDir(SD, "/", 0);
 
-        // Crear y escribir en el archivo
+        // Create and write to file
         myFile = SD.open("/test.txt", FILE_WRITE);
         if (myFile) {
-          myFile.println("Hola, Arduino en SD!");
-          myFile.println("Esto es una prueba de escritura.");
+          myFile.println("Hello, Arduino on SD!");
+          myFile.println("This is a write test.");
           myFile.close();
-          Serial.println("Archivo escrito correctamente.");
+          Serial.println("File written successfully.");
         } else {
-          Serial.println("Error al abrir test.txt para escribir.");
+          Serial.println("Error opening test.txt for writing.");
         }
 
-        // Leer el archivo
+        // Read the file
         myFile = SD.open("/test.txt");
         if (myFile) {
-          Serial.println("\nContenido del archivo:");
+          Serial.println("\nFile contents:");
           while (myFile.available()) {
             Serial.write(myFile.read());
           }
           myFile.close();
         } else {
-          Serial.println("Error al abrir test.txt para lectura.");
+          Serial.println("Error opening test.txt for reading.");
         }
 
-        // Volver a listar archivos
-        Serial.println("\nArchivos en la SD después de la escritura:");
+        // List files again
+        Serial.println("\nFiles on SD card after writing:");
         listDir(SD, "/", 0);
       }
 
       void loop() {
-        // Nada en el loop
+        // Nothing in the loop
       }
 
-      // Función para listar archivos y carpetas
+      // Function to list files and folders
       void listDir(fs::FS &fs, const char * dirname, uint8_t levels) {
         File root = fs.open(dirname);
         if (!root) {
-          Serial.println("Error al abrir el directorio");
+          Serial.println("Error opening directory");
           return;
         }
         if (!root.isDirectory()) {
-          Serial.println("No es un directorio");
+          Serial.println("Not a directory");
           return;
         }
 
@@ -329,3 +357,8 @@ This table illustrates the connections between the SD card and the GPIO pins on 
        :width: 90%
        
        ESP-IDF Menuconfig SD SPI Configuration
+
+Resources
+---------
+
+- `MicroPython SDCard Library <

@@ -40,7 +40,7 @@ Documentation for the UNIT PULSAR H2 Development Board. This board is a versatil
    22_adc
    33_i2c
    44_spi
-   55_WS2812
+   55_RGB_LED
    66_communication
    report
    
