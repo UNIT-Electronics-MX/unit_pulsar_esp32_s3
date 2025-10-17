@@ -30,6 +30,13 @@ Pinout Details
 --------------
 Below is the pinout table for the I2C connections on the PULSAR H2, detailing the pin assignments for SDA and SCL.
 
+.. figure:: /_static/nanoh2/i2c.png
+   :align: center
+   :alt: PULSAR H2 Pinout
+   :width: 30%
+
+   PULSAR H2 Pinout
+
 .. list-table:: ESP32-H2 I2C Pinout
    :widths: 25 25
    :header-rows: 1
@@ -195,13 +202,7 @@ Library Support
 
       >>> i2c = machine.SoftI2C(freq=400000, timeout=50000, sda=machine.Pin(12), scl=machine.Pin(22))
 
-    **For ESP32 (Generic)**::
 
-      >>> i2c = machine.SoftI2C(freq=400000, timeout=50000, sda=machine.Pin(21), scl=machine.Pin(22))
-
-    **For RP2040**::
-
-      >>> i2c = machine.SoftI2C(freq=400000, timeout=50000, sda=machine.Pin(4), scl=machine.Pin(5))
 
     **Example Code**
 

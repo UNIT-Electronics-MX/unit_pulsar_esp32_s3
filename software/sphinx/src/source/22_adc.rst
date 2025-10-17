@@ -3,14 +3,14 @@ Analog to Digital Conversion
 
 Learn how to read analog sensor values using the ADC module on the **PULSAR H2** development board with the ESP32-H2. This section will cover the basics of analog input and conversion techniques.
 
-.. .. _figure_adc:
+.. _figure_adc:
 
-.. .. figure:: /_static/adc.png
-..    :align: center
-..    :alt: ADC
-..    :width: 20%
+.. figure:: /_static/nanoh2/adc.png
+   :align: center
+   :alt: ADC
+   :width: 50%
 
-..    ADC Pins
+   ADC Pins
 
 ADC Definition
 ---------------------
@@ -342,11 +342,3 @@ Below is an example that continuously reads from an ADC pin and prints the resul
         }
 
 
-.. _figure_adc:
-
-.. figure:: /_static/nanoh2/adc.png
-   :align: center
-   :alt: ADC
-   :width: 95%
-
-   Example of ADC usage on the **PULSAR H2** board.

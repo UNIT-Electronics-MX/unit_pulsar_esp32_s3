@@ -23,10 +23,10 @@ Pinout distribution
       <br><br>
 
       <!-- Imagen que se puede abrir en una nueva ventana al hacer clic -->
-      <a href="./_static/nanoh2/Nano-H2-Pinout_EN.jpg" target="_blank">
-        <img 
-           src="./_static/nanoh2/Nano-H2-Pinout_EN.jpg" 
-           alt="PULSAR H2 Pinout" 
+      <a href="./_static/nanoh2/pinout.png" target="_blank">
+        <img
+           src="./_static/nanoh2/pinout.png"
+           alt="PULSAR H2 Pinout"
            style="width: 90%; height: auto; border: 1px solid #ccc; border-radius: 8px;"
         >
       </a>
