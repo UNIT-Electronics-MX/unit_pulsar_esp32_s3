@@ -33,7 +33,43 @@ Web-Based Flashing (Recommended for Beginners)
 
 Using **ESPTool-JS Web Flasher**:
 
-1. **Open Web Flasher**: Navigate to https://espressif.github.io/esptool-js/
+1. **Open Web Flasher**: Navigate to 
+
+.. raw:: html
+
+   <div style="display: flex; justify-content: center; margin: 2em 0;">
+      <button
+         style="
+            background-color: #2b6cb0;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 28px;
+            font-size: 1em;
+            font-weight: 600;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            letter-spacing: 0.2px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: all 0.25s ease;
+         "
+         onmouseover="
+            this.style.backgroundColor='#2c5282';
+            this.style.boxShadow='0 4px 12px rgba(0,0,0,0.15)';
+         "
+         onmouseout="
+            this.style.backgroundColor='#2b6cb0';
+            this.style.boxShadow='0 2px 6px rgba(0,0,0,0.1)';
+         "
+         onclick="window.open('https://espressif.github.io/esptool-js/', '_blank')"
+      >
+         Open ESPTool-JS Web Flasher
+      </button>
+   </div>
+
+
+
+
 2. **Connect Device**: Connect your PULSAR H2 via USB-C
 3. **Device Detection**: Click "Connect" and select your ESP32-H2 device
 4. **Configure Flashing Parameters**:
