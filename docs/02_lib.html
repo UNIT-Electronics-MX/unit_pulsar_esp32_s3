@@ -543,6 +543,25 @@ document.write(`
 <li><p><strong>Reset Method</strong>: Hard Reset</p></li>
 </ul>
 </li>
+</ol>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="_images/esptools.png"><img alt="ESPTool-JS Configuration Example" src="_images/esptools.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">ESPTool-JS Configuration Example</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>Flash Erase Recommended</strong></p>
+<p>For optimal MicroPython firmware performance and to prevent potential issues:</p>
+<ol class="arabic simple">
+<li><p><strong>Click “Erase” button</strong> in ESPTool-JS before flashing the firmware</p></li>
+<li><p><strong>Wait for erase completion</strong> (takes ~30 seconds)</p></li>
+<li><p><strong>Then flash</strong> the MicroPython binary</p></li>
+</ol>
+<p>This process clears any existing firmware or data that might interfere with MicroPython execution, ensuring a clean installation and preventing boot loops or unexpected behavior.</p>
+</div>
+<ol class="arabic simple" start="5">
 <li><p><strong>Start Flashing</strong>: Click “Program” button</p></li>
 <li><p><strong>Wait for completion</strong>: Process takes approximately 2-3 minutes</p></li>
 </ol>
@@ -565,12 +584,25 @@ python3<span class="w"> </span>-m<span class="w"> </span>esptool<span class="w">
 <h3>Connecting to MicroPython REPL<a class="headerlink" href="#connecting-to-micropython-repl" title="Link to this heading">#</a></h3>
 <p>After successful flashing, connect to the MicroPython REPL:</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Windows</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Linux/macOS</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">Thonny IDE</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using PuTTY or built-in serial terminal</span>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Thonny IDE</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Windows</button><button aria-controls="panel-0-0-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-2" name="0-2" role="tab" tabindex="-1">Linux/macOS</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1. Open Thonny IDE
+2. Go to Tools &gt; Options &gt; Interpreter
+3. Select &quot;MicroPython (ESP32)&quot;
+4. Choose correct COM port
+5. Click OK and connect
+</pre></div>
+</div>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="_images/thonny.png"><img alt="Thonny IDE Configuration Example" src="_images/thonny.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Thonny IDE Configuration Example</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using PuTTY or built-in serial terminal</span>
 <span class="c1"># Port: COM3 (check Device Manager)</span>
 <span class="c1"># Baud Rate: 115200</span>
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using picocom</span>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using picocom</span>
 picocom<span class="w"> </span>-b<span class="w"> </span><span class="m">115200</span><span class="w"> </span>/dev/ttyACM0
 
 <span class="c1"># Using screen</span>
@@ -578,13 +610,6 @@ screen<span class="w"> </span>/dev/ttyACM0<span class="w"> </span><span class="m
 
 <span class="c1"># Using miniterm</span>
 python3<span class="w"> </span>-m<span class="w"> </span>serial.tools.miniterm<span class="w"> </span>/dev/ttyACM0<span class="w"> </span><span class="m">115200</span>
-</pre></div>
-</div>
-</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1. Open Thonny IDE
-2. Go to Tools &gt; Options &gt; Interpreter
-3. Select &quot;MicroPython (ESP32)&quot;
-4. Choose correct COM port
-5. Click OK and connect
 </pre></div>
 </div>
 </div></div>

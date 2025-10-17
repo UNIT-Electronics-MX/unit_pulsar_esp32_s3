@@ -432,8 +432,14 @@ document.write(`
 <section id="pinout-details">
 <h2>Pinout Details<a class="headerlink" href="#pinout-details" title="Link to this heading">#</a></h2>
 <p>Below is the pinout table for the I2C connections on the PULSAR H2, detailing the pin assignments for SDA and SCL.</p>
-<div class="pst-scrollable-table-container"><table class="table table-center" id="id1">
-<caption><span class="caption-number">Table 4 </span><span class="caption-text">ESP32-H2 I2C Pinout</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="_images/i2c.png"><img alt="PULSAR H2 Pinout" src="_images/i2c.png" style="width: 30%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">PULSAR H2 Pinout</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="pst-scrollable-table-container"><table class="table table-center" id="id2">
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">ESP32-H2 I2C Pinout</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
 <colgroup>
 <col style="width: 50.0%" />
 <col style="width: 50.0%" />
@@ -468,10 +474,10 @@ document.write(`
 <p class="admonition-title">Note</p>
 <p>Unlike other ESP32 variants, the ESP32-H2 doesn’t have a separate “LP I2C” mode because the entire chip is designed for low power operation.</p>
 </div>
-<figure class="align-center" id="id2">
+<figure class="align-center" id="id3">
 <a class="reference internal image-reference" href="_images/c6_oled.png"><img alt="I2C Connection Example" src="_images/c6_oled.png" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 13 </span><span class="caption-text">I2C Device Connection Example</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">I2C Device Connection Example</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -543,15 +549,15 @@ document.write(`
 </section>
 <section id="ssd1306-display">
 <h2>SSD1306 Display<a class="headerlink" href="#ssd1306-display" title="Link to this heading">#</a></h2>
-<figure class="align-center" id="id3">
+<figure class="align-center" id="id4">
 <span id="figura-ssd1306-display"></span><a class="reference internal image-reference" href="_images/oled.jpg"><img alt="ssd1306 display" src="_images/oled.jpg" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 14 </span><span class="caption-text">SSD1306 Display</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">SSD1306 Display</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 <p>The display 128x64 pixel monochrome OLED display equipped with an SSD1306 controller is connected using a JST 1.25mm 4-pin connector. The following table provides the pinout details for the display connection.</p>
-<div class="pst-scrollable-table-container"><table class="table table-center" id="id4">
-<caption><span class="caption-number">Table 5 </span><span class="caption-text">SSD1306 Display Pinout</span><a class="headerlink" href="#id4" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table table-center" id="id5">
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">SSD1306 Display Pinout</span><a class="headerlink" href="#id5" title="Link to this table">#</a></caption>
 <colgroup>
 <col style="width: 50.0%" />
 <col style="width: 50.0%" />
@@ -595,14 +601,6 @@ document.write(`
 <p>Change the following line depending on your microcontroller:</p>
 <p><strong>For PULSAR H2 (ESP32-H2)</strong>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">i2c</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">SoftI2C</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">sda</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span> <span class="n">scl</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">22</span><span class="p">))</span>
-</pre></div>
-</div>
-<p><strong>For ESP32 (Generic)</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">i2c</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">SoftI2C</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">sda</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">21</span><span class="p">),</span> <span class="n">scl</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">22</span><span class="p">))</span>
-</pre></div>
-</div>
-<p><strong>For RP2040</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">i2c</span> <span class="o">=</span> <span class="n">machine</span><span class="o">.</span><span class="n">SoftI2C</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span> <span class="n">sda</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">scl</span><span class="o">=</span><span class="n">machine</span><span class="o">.</span><span class="n">Pin</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
 </pre></div>
 </div>
 <p><strong>Example Code</strong></p>

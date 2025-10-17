@@ -18,6 +18,13 @@ Working with LEDs on ESP32-H2
 
 In this section, we will learn how to control a single LED using a microcontroller. The LED will be connected to a GPIO pin, and we will control its on/off states using a simple program.
 
+.. figure:: /_static/nanoh2/led_blink.png
+   :align: center
+   :alt: LED Connection
+   :width: 50%
+
+   LED Connection to GPIO Pin
+
 LED Blinking Example
 ~~~~~~~~~~~~~~~~~~~~
 

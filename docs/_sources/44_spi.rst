@@ -7,28 +7,36 @@ SPI Overview
 
 SPI (Serial Peripheral Interface) is a synchronous, full-duplex, master-slave communication bus. It is commonly used to connect microcontrollers to peripherals such as sensors, displays, and memory devices. The PULSAR H2 development board features SPI communication capabilities, allowing you to interface with a wide range of SPI devices including microSD cards.
 
+SPI Pin Configuration
+~~~~~~~~~~~~~~~~~~~~
 
-.. .. _figura-spi:
+The ESP32-H2 PULSAR H2 board has the following SPI pin configuration:
 
-.. .. figure:: /_static/dualmcu_one_spi.png
-..    :align: center
-..    :alt: SPI
-..    :width: 90%
+.. _figura-spi-internal:
 
-..    SPI Pins
+.. figure:: /_static/nanoh2/sdcard.png
+   :align: center
+   :alt: Internal SPI Configuration
+   :width: 30%
 
+   PULSAR H2 Internal SPI Configuration
 
+.. _figura-spi-external:
 
+.. figure:: /_static/nanoh2/spi_external.png
+   :align: center
+   :alt: External SPI Connection
+   :width: 70%
 
+   External SPI Device Connection
 
-SDCard SPI
-------------
+MicroSD Card SPI Interface
+--------------------------
 
 .. warning::
 
-    Ensure that the Micro SD contain data. We recommend saving multiple files beforehand to facilitate the use.
+    Ensure that the Micro SD contains data. We recommend saving multiple files beforehand to facilitate testing.
     Format the Micro SD card to FAT32 before using it with the ESP32-H2.
-
 
 .. _figura-micro-sd-card:
 
@@ -95,6 +103,35 @@ This table illustrates the connections between the SD card and the GPIO pins on 
      - D1 (Not Connected)
      - N/C
      - ---
+
+SPI Pin Mapping Summary
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. list-table:: ESP32-H2 SPI Pin Configuration
+   :widths: 25 25 25 25
+   :header-rows: 1
+   :align: center
+
+   * - SPI Function
+     - ESP32-H2 GPIO
+     - PULSAR H2 Pin
+     - Description
+   * - MOSI (Master Out)
+     - GPIO5
+     - D11/MOSI
+     - Data output from master
+   * - MISO (Master In)
+     - GPIO0
+     - D12/MISO
+     - Data input to master
+   * - SCK (Clock)
+     - GPIO4
+     - D13/SCK
+     - Serial clock signal
+   * - CS (Chip Select)
+     - GPIO11
+     - D10/SS
+     - Device selection signal
 
 .. note::
    **MicroSD Connection Notes:**
@@ -353,12 +390,89 @@ This table illustrates the connections between the SD card and the GPIO pins on 
 
     .. figure:: /_static/menuconfig.png
        :align: center
-       :alt: ESP-IDF
+       :alt: ESP-IDF Menuconfig
        :width: 90%
        
        ESP-IDF Menuconfig SD SPI Configuration
 
-Resources
----------
+General SPI Device Connection
+----------------------------
 
-- `MicroPython SDCard Library <
+Besides microSD cards, you can connect various SPI devices to the PULSAR H2:
+
+Common SPI Devices
+~~~~~~~~~~~~~~~~~
+
+.. list-table:: Compatible SPI Devices
+   :widths: 30 30 40
+   :header-rows: 1
+   :align: center
+
+   * - Device Type
+     - Example Models
+     - Applications
+   * - Displays
+     - ST7735, ILI9341, SSD1306
+     - Status displays, GUI interfaces
+   * - Sensors
+     - BME280, MPU6050, MAX31855
+     - Environmental monitoring, IMU
+   * - Memory
+     - W25Q32, AT25DF641, microSD
+     - Data storage, logging
+   * - ADC/DAC
+     - MCP3008, MCP4725
+     - Analog signal processing
+   * - RF Modules
+     - nRF24L01, LoRa modules
+     - Wireless communication
+
+SPI Configuration Tips
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+   # General SPI device connection example
+   from machine import Pin, SPI
+   
+   # Initialize SPI bus with standard pins
+   spi = SPI(1, 
+             sck=Pin(4),   # Clock
+             mosi=Pin(5),  # Master Out, Slave In
+             miso=Pin(0),  # Master In, Slave Out
+             baudrate=1000000)  # 1MHz for most devices
+   
+   # Individual chip select pins for multiple devices
+   cs_display = Pin(11, Pin.OUT)
+   cs_sensor = Pin(10, Pin.OUT)
+   cs_memory = Pin(9, Pin.OUT)
+   
+   # Device selection example
+   cs_display.value(0)  # Select display
+   spi.write(b'display_data')
+   cs_display.value(1)  # Deselect display
+
+Troubleshooting SPI
+~~~~~~~~~~~~~~~~~~
+
+**Common Issues:**
+
+1. **Device not responding**: Check wiring and power supply
+2. **Data corruption**: Reduce SPI clock frequency
+3. **Multiple device conflicts**: Ensure proper CS management
+4. **Signal integrity**: Use short wires, add pull-up resistors if needed
+
+**Best Practices:**
+
+- Use appropriate SPI clock frequencies for each device
+- Implement proper chip select (CS) timing
+- Add decoupling capacitors near SPI devices
+- Keep wire lengths short for high-frequency signals
+
+Resources and Documentation
+--------------------------
+
+- `MicroPython SPI Documentation <https://docs.micropython.org/en/latest/library/machine.SPI.html>`_
+- `ESP32-H2 SPI Driver Guide <https://docs.espressif.com/projects/esp-idf/en/latest/esp32h2/api-reference/peripherals/spi_master.html>`_
+- `SPI Protocol Specification <https://en.wikipedia.org/wiki/Serial_Peripheral_Interface>`_
+- `SD Card SPI Mode Documentation <https://www.sdcard.org/downloads/pls/>`_
