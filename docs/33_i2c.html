@@ -653,9 +653,8 @@ document.write(`
 <span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
 
 <span class="w">  </span><span class="c1">// Initialize I2C - PULSAR H2 pins: A4 (SDA) = GPIO12, A5 (SCL) = GPIO22</span>
-<span class="w">  </span><span class="n">Wire</span><span class="p">.</span><span class="n">setSDA</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
-<span class="w">  </span><span class="n">Wire</span><span class="p">.</span><span class="n">setSCL</span><span class="p">(</span><span class="mi">22</span><span class="p">);</span>
-<span class="w">  </span><span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+
+<span class="w">  </span><span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">22</span><span class="p">);</span>
 <span class="w">  </span><span class="c1">// Start the OLED display</span>
 <span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">display</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">SSD1306_SWITCHCAPVCC</span><span class="p">,</span><span class="w"> </span><span class="mh">0x3C</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Address 0x3C for 128x64</span>
 <span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">F</span><span class="p">(</span><span class="s">&quot;SSD1306 allocation failed&quot;</span><span class="p">));</span>

@@ -263,9 +263,8 @@ Library Support
         Serial.begin(9600);
 
         // Initialize I2C - PULSAR H2 pins: A4 (SDA) = GPIO12, A5 (SCL) = GPIO22
-        Wire.setSDA(12);
-        Wire.setSCL(22);
-        Wire.begin();
+
+        Wire.begin(12,22);
         // Start the OLED display
         if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x64
           Serial.println(F("SSD1306 allocation failed"));
@@ -299,7 +298,7 @@ Library Support
 
         // Refresh the display to show the new count
         display.display();
-        
+
         // Increment the counter
         counter++;
 

@@ -52,19 +52,21 @@ Below is an example that demonstrates how to control addressable RGB LED strips 
       .. code-block:: c++
 
          #include <Adafruit_NeoPixel.h>
-         
+
          #define RGB_LED_PIN 8
          #define NUM_LEDS 1
-         
+
          // Initialize addressable RGB LED strip
          Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, RGB_LED_PIN, NEO_GRB + NEO_KHZ800);
-         
+
          void setup() {
             strip.begin();
-            // Set color (Red, Green, Blue) - orange color  
+            // Set color (Red, Green, Blue) - orange color
             strip.setPixelColor(0, 255, 128, 0);
             strip.show();
          }
+
+         void loop(){}
    .. tab:: esp-idf
 
       .. code-block:: c
