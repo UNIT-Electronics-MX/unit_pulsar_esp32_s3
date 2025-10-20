@@ -304,35 +304,39 @@ SPI Pin Mapping Summary
 
     .. code-block:: c
 
+      #include <stdio.h>
       #include <string.h>
       #include <sys/stat.h>
+      #include <sys/unistd.h>
       #include "esp_log.h"
       #include "esp_vfs_fat.h"
       #include "sdmmc_cmd.h"
+      #include "driver/gpio.h"
 
+      #define TAG "SD_OPS"
       #define MOUNT_POINT "/sdcard"
+      #define FILE_PREFIX MOUNT_POINT"/data_"
+      #define MAX_FILES 20
 
-      #define PIN_NUM_MISO  CONFIG_EXAMPLE_PIN_MISO
-      #define PIN_NUM_MOSI  CONFIG_EXAMPLE_PIN_MOSI
-      #define PIN_NUM_CLK   CONFIG_EXAMPLE_PIN_CLK
-      #define PIN_NUM_CS    CONFIG_EXAMPLE_PIN_CS
+      #define PIN_NUM_MISO  0
+      #define PIN_NUM_MOSI  5
+      #define PIN_NUM_CLK   4
+      #define PIN_NUM_CS    11
+      #define BTN_PIN       GPIO_NUM_9
 
-      static const char *TAG = "SDCARD";
+      FILE* safe_fopen(const char* path, const char* mode, int tries) {
+          FILE* f = NULL;
+          for (int i = 0; i < tries; ++i) {
+              f = fopen(path, mode);
+              if (f) return f;
+              vTaskDelay(50 / portTICK_PERIOD_MS);
+          }
+          return NULL;
+      }
 
-      void app_main(void)
-      {
-          esp_err_t ret;
-          sdmmc_card_t *card;
-
-          ESP_LOGI(TAG, "Initializing SD card...");
-
-          esp_vfs_fat_sdmmc_mount_config_t mount_config = {
-              .format_if_mount_failed = false,
-              .max_files = 3,
-              .allocation_unit_size = 16 * 1024
-          };
-
+      esp_err_t mount_sdcard(sdmmc_card_t **card_out) {
           sdmmc_host_t host = SDSPI_HOST_DEFAULT();
+          host.max_freq_khz = 4000;
 
           spi_bus_config_t bus_cfg = {
               .mosi_io_num = PIN_NUM_MOSI,
@@ -343,49 +347,125 @@ SPI Pin Mapping Summary
               .max_transfer_sz = 4000,
           };
 
-          ret = spi_bus_initialize(host.slot, &bus_cfg, SDSPI_DEFAULT_DMA);
+          gpio_set_pull_mode(PIN_NUM_MISO, GPIO_PULLUP_ONLY);
+          gpio_set_pull_mode(PIN_NUM_MOSI, GPIO_PULLUP_ONLY);
+          gpio_set_pull_mode(PIN_NUM_CLK, GPIO_PULLUP_ONLY);
+          gpio_set_pull_mode(PIN_NUM_CS, GPIO_PULLUP_ONLY);
+
+          esp_err_t ret = spi_bus_initialize(host.slot, &bus_cfg, SDSPI_DEFAULT_DMA);
+          if (ret == ESP_ERR_INVALID_STATE) {
+              ESP_LOGW(TAG, "SPI bus already initialized, attempting to free and reinitialize.");
+              spi_bus_free(host.slot);  // Libera el bus anterior
+              ret = spi_bus_initialize(host.slot, &bus_cfg, SDSPI_DEFAULT_DMA);
+          }
+
           if (ret != ESP_OK) {
-              ESP_LOGE(TAG, "Failed to init SPI bus.");
-              return;
+              ESP_LOGE(TAG, "SPI bus init failed: %s", esp_err_to_name(ret));
+              return ret;
           }
 
           sdspi_device_config_t slot_config = SDSPI_DEVICE_CONFIG_DEFAULT();
           slot_config.gpio_cs = PIN_NUM_CS;
           slot_config.host_id = host.slot;
 
+          esp_vfs_fat_sdmmc_mount_config_t mount_config = {
+              .format_if_mount_failed = false,
+              .max_files = 5,
+              .allocation_unit_size = 16 * 1024
+          };
+
+          sdmmc_card_t *card;
           ret = esp_vfs_fat_sdspi_mount(MOUNT_POINT, &host, &slot_config, &mount_config, &card);
           if (ret != ESP_OK) {
-              ESP_LOGE(TAG, "Failed to mount filesystem.");
-              return;
+              ESP_LOGE(TAG, "SD mount failed: %s", esp_err_to_name(ret));
+              spi_bus_free(host.slot);  // Importante: liberar SPI si falla montaje
+              return ret;
           }
 
-          ESP_LOGI(TAG, "Filesystem mounted.");
-
-          const char *file_path = MOUNT_POINT"/test.txt";
-          FILE *f = fopen(file_path, "w");
-          if (f == NULL) {
-              ESP_LOGE(TAG, "Failed to open file for writing.");
-              return;
-          }
-
-          fprintf(f, "Hello from ESP32!\n");
-          fclose(f);
-          ESP_LOGI(TAG, "File written.");
-
-          f = fopen(file_path, "r");
-          if (f) {
-              char line[64];
-              fgets(line, sizeof(line), f);
-              fclose(f);
-              ESP_LOGI(TAG, "Read from file: '%s'", line);
-          } else {
-              ESP_LOGE(TAG, "Failed to read file.");
-          }
-
-          esp_vfs_fat_sdcard_unmount(MOUNT_POINT, card);
-          spi_bus_free(host.slot);
-          ESP_LOGI(TAG, "Card unmounted.");
+          *card_out = card;
+          sdmmc_card_print_info(stdout, card);
+          return ESP_OK;
       }
+
+
+      void write_files() {
+          for (int i = 0; i < MAX_FILES; i++) {
+              char path[64];
+              snprintf(path, sizeof(path), FILE_PREFIX"%d.txt", i);
+              FILE *f = safe_fopen(path, "w", 5);
+              if (f) {
+                  fprintf(f, "This is file number %d\n", i);
+                  fflush(f);
+                  fclose(f);
+                  ESP_LOGI(TAG, "Wrote %s", path);
+              } else {
+                  ESP_LOGE(TAG, "Failed to write %s", path);
+              }
+              vTaskDelay(10 / portTICK_PERIOD_MS);
+          }
+      }
+
+      void read_files() {
+          for (int i = 0; i < MAX_FILES; i++) {
+              char path[64], buffer[128];
+              snprintf(path, sizeof(path), FILE_PREFIX"%d.txt", i);
+              FILE *f = safe_fopen(path, "r", 5);
+              if (f) {
+                  if (fgets(buffer, sizeof(buffer), f)) {
+                      ESP_LOGI(TAG, "[%d] %s", i, buffer);
+                  } else {
+                      ESP_LOGW(TAG, "File %s is empty or unreadable.", path);
+                  }
+                  fclose(f);
+              } else {
+                  ESP_LOGE(TAG, "Failed to read %s", path);
+              }
+              vTaskDelay(10 / portTICK_PERIOD_MS);
+          }
+      }
+
+      void wait_for_button_press() {
+          ESP_LOGI(TAG, "Waiting for button press (GPIO9) to retry...");
+          while (gpio_get_level(BTN_PIN) == 1) {
+              vTaskDelay(100 / portTICK_PERIOD_MS);
+          }
+          while (gpio_get_level(BTN_PIN) == 0) {
+              vTaskDelay(100 / portTICK_PERIOD_MS);
+          }
+          vTaskDelay(200 / portTICK_PERIOD_MS);
+      }
+
+      void app_main(void)
+      {
+          gpio_config_t io_conf = {
+              .pin_bit_mask = (1ULL << BTN_PIN),
+              .mode = GPIO_MODE_INPUT,
+              .pull_up_en = GPIO_PULLUP_ENABLE,
+              .pull_down_en = GPIO_PULLDOWN_DISABLE,
+              .intr_type = GPIO_INTR_DISABLE
+          };
+          gpio_config(&io_conf);
+
+          while (1) {
+              sdmmc_card_t *card;
+              ESP_LOGI(TAG, "Mounting SD card...");
+
+              if (mount_sdcard(&card) == ESP_OK) {
+                  ESP_LOGI(TAG, "SD card mounted. Starting file operations.");
+                  write_files();
+                  read_files();
+                  esp_vfs_fat_sdcard_unmount(MOUNT_POINT, card);
+                  sdmmc_host_t host = SDSPI_HOST_DEFAULT();
+                  spi_bus_free(host.slot);
+                  ESP_LOGI(TAG, "SD card unmounted and SPI bus freed.");
+              } else {
+                  ESP_LOGW(TAG, "Operation aborted due to mount failure.");
+              }
+
+              wait_for_button_press();
+          }
+      }
+
 
 
     .. figure:: /_static/menuconfig.png
