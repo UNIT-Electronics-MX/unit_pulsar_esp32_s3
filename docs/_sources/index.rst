@@ -22,7 +22,7 @@ Documentation for the UNIT PULSAR H2 Development Board. This board is a versatil
 .. raw:: html
 
    <div style="text-align: center;">
-      <button style="background-color: #77dd77; color: white; border: none; padding: 10px 20px; margin-right: 10px;" onclick="window.open('./_static/dualmcuone.pdf', '_blank')">Download PDF version</button>
+      <a href="https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2/unit_pulsar_esp32_h2_sphinx.pdf" target="_blank" rel="noopener noreferrer" role="button" style="background-color: #77dd77; color: white; border: none; padding: 10px 20px; margin-right: 10px; text-decoration: none; display: inline-block;">Download PDF version</a>
    </div>
 
 
