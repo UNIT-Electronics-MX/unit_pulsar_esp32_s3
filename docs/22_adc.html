@@ -422,6 +422,12 @@ document.write(`
   <section id="analog-to-digital-conversion">
 <h1>Analog to Digital Conversion<a class="headerlink" href="#analog-to-digital-conversion" title="Link to this heading">#</a></h1>
 <p>Learn how to read analog sensor values using the ADC module on the <strong>PULSAR H2</strong> development board with the ESP32-H2. This section will cover the basics of analog input and conversion techniques.</p>
+<figure class="align-center" id="id1">
+<span id="figure-adc"></span><a class="reference internal image-reference" href="_images/adc.png"><img alt="ADC" src="_images/adc.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">ADC Pins</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
 <section id="adc-definition">
 <h2>ADC Definition<a class="headerlink" href="#adc-definition" title="Link to this heading">#</a></h2>
 <p>Analog-to-digital conversion (ADC) is a process that converts analog signals into digital values. The ESP32-H2, equipped with multiple ADC channels, provides flexible options for reading analog voltages and converting them into digital values. Below, you will find the details on how to utilize these pins for ADC operations.</p>
@@ -439,8 +445,8 @@ For example, a 12-bit ADC can divide the analog signal into 4096 levels.</p></li
 <section id="esp32-h2-adc-channels-official-documentation">
 <h2>ESP32-H2 ADC Channels (Official Documentation)<a class="headerlink" href="#esp32-h2-adc-channels-official-documentation" title="Link to this heading">#</a></h2>
 <p>Complete ADC channel mapping according to ESP32-H2 official documentation:</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1">
-<caption><span class="caption-number">Table 1 </span><span class="caption-text">ESP32-H2 ADC Channels</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id2">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">ESP32-H2 ADC Channels</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
 <colgroup>
 <col style="width: 20.0%" />
 <col style="width: 30.0%" />
@@ -479,8 +485,8 @@ For example, a 12-bit ADC can divide the analog signal into 4096 levels.</p></li
 </section>
 <section id="adc-pin-status-on-pulsar-h2">
 <h2>ADC Pin Status on PULSAR H2<a class="headerlink" href="#adc-pin-status-on-pulsar-h2" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table" id="id2">
-<caption><span class="caption-number">Table 2 </span><span class="caption-text">PULSAR H2 Pin Status for ADC Usage</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id3">
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">PULSAR H2 Pin Status for ADC Usage</span><a class="headerlink" href="#id3" title="Link to this table">#</a></caption>
 <colgroup>
 <col style="width: 20.0%" />
 <col style="width: 15.0%" />
@@ -566,8 +572,8 @@ For example, a 12-bit ADC can divide the analog signal into 4096 levels.</p></li
 <p class="admonition-title">Important</p>
 <p><strong>5 pins can be used for analog readings on PULSAR H2:</strong></p>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id3">
-<caption><span class="caption-number">Table 3 </span><span class="caption-text">Usable ADC Pins</span><a class="headerlink" href="#id3" title="Link to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id4">
+<caption><span class="caption-number">Table 3 </span><span class="caption-text">Usable ADC Pins</span><a class="headerlink" href="#id4" title="Link to this table">#</a></caption>
 <colgroup>
 <col style="width: 20.0%" />
 <col style="width: 20.0%" />
@@ -769,12 +775,6 @@ For example, a 12-bit ADC can divide the analog signal into 4096 levels.</p></li
 </pre></div>
 </div>
 </div></div>
-<figure class="align-center" id="id4">
-<span id="figure-adc"></span><a class="reference internal image-reference" href="_images/adc.png"><img alt="ADC" src="_images/adc.png" style="width: 95%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Example of ADC usage on the <strong>PULSAR H2</strong> board.</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
 </section>
 </section>
 

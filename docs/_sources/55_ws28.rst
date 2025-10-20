@@ -17,7 +17,7 @@ The PULSAR H2 board has a GPIO pin embedded connected to a single addressable RG
 
 .. _figura-PULSAR  H2-one:
 
-.. figure:: /_static/neo.png
+.. figure:: /_static/nano2/neo.png
    :align: center
    :alt: rgb led
    :width: 40%

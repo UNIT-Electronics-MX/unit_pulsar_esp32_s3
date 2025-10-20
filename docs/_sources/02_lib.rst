@@ -82,6 +82,24 @@ Using **ESPTool-JS Web Flasher**:
    - **Flash Size**: 4MB
    - **Reset Method**: Hard Reset
 
+.. figure:: /_static/nanoh2/esptools.png
+   :align: center
+   :alt: ESPTool-JS Configuration Example
+   :width: 100%
+
+   ESPTool-JS Configuration Example
+
+.. important:: 
+   **Flash Erase Recommended**
+   
+   For optimal MicroPython firmware performance and to prevent potential issues:
+   
+   1. **Click "Erase" button** in ESPTool-JS before flashing the firmware
+   2. **Wait for erase completion** (takes ~30 seconds)
+   3. **Then flash** the MicroPython binary
+   
+   This process clears any existing firmware or data that might interfere with MicroPython execution, ensuring a clean installation and preventing boot loops or unexpected behavior.
+
 5. **Start Flashing**: Click "Program" button
 6. **Wait for completion**: Process takes approximately 2-3 minutes
 
@@ -105,7 +123,23 @@ Connecting to MicroPython REPL
 After successful flashing, connect to the MicroPython REPL:
 
 .. tabs::
+   
+   .. tab:: Thonny IDE
 
+      .. code-block:: text
+
+         1. Open Thonny IDE
+         2. Go to Tools > Options > Interpreter
+         3. Select "MicroPython (ESP32)"
+         4. Choose correct COM port
+         5. Click OK and connect
+
+      .. figure:: /_static/nanoh2/thonny.png
+         :align: center
+         :alt: Thonny IDE Configuration Example
+         :width: 80%
+
+         Thonny IDE Configuration Example
 
    .. tab:: Windows
 
@@ -132,15 +166,7 @@ After successful flashing, connect to the MicroPython REPL:
 
 
 
-   .. tab:: Thonny IDE
 
-      .. code-block:: text
-
-         1. Open Thonny IDE
-         2. Go to Tools > Options > Interpreter
-         3. Select "MicroPython (ESP32)"
-         4. Choose correct COM port
-         5. Click OK and connect
 
 
 
