@@ -14,7 +14,7 @@ The firmware is available in the following location:
 - **ESP32H2_MicroPython_v1.0_Complete.bin** (1,557,600 bytes)
     - Complete binary ready to flash from 0x0000
     - Includes: Bootloader + Partition Table + MicroPython
-    - **Download**: :download:`ESP32H2 MicroPython v1.0 </_static/nanoh2/ESP32H2_Micropython_v1.0_cOMPLETE.BIN>`
+    - **Download**: :download:`ESP32H2 MicroPython v1.0 </_static/nanoh2/ESP32H2_MicroPython_v1.0_Complete.bin>`
 
 - **flash_esp32h2.sh**
     - Automatic script to flash ESP32-H2
