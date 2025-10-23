@@ -725,35 +725,39 @@ Format the Micro SD card to FAT32 before using it with the ESP32-H2.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
+</div><div aria-labelledby="tab-0-0-2" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-2" name="0-2" role="tabpanel" tabindex="0"><div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/stat.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/unistd.h&gt;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;esp_log.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;esp_vfs_fat.h&quot;</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;sdmmc_cmd.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;driver/gpio.h&quot;</span>
 
+<span class="cp">#define TAG &quot;SD_OPS&quot;</span>
 <span class="cp">#define MOUNT_POINT &quot;/sdcard&quot;</span>
+<span class="cp">#define FILE_PREFIX MOUNT_POINT&quot;/data_&quot;</span>
+<span class="cp">#define MAX_FILES 20</span>
 
-<span class="cp">#define PIN_NUM_MISO  CONFIG_EXAMPLE_PIN_MISO</span>
-<span class="cp">#define PIN_NUM_MOSI  CONFIG_EXAMPLE_PIN_MOSI</span>
-<span class="cp">#define PIN_NUM_CLK   CONFIG_EXAMPLE_PIN_CLK</span>
-<span class="cp">#define PIN_NUM_CS    CONFIG_EXAMPLE_PIN_CS</span>
+<span class="cp">#define PIN_NUM_MISO  0</span>
+<span class="cp">#define PIN_NUM_MOSI  5</span>
+<span class="cp">#define PIN_NUM_CLK   4</span>
+<span class="cp">#define PIN_NUM_CS    11</span>
+<span class="cp">#define BTN_PIN       GPIO_NUM_9</span>
 
-<span class="k">static</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">TAG</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;SDCARD&quot;</span><span class="p">;</span>
+<span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="nf">safe_fopen</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">mode</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">tries</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">tries</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">mode</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="p">;</span>
+<span class="w">        </span><span class="n">vTaskDelay</span><span class="p">(</span><span class="mi">50</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">portTICK_PERIOD_MS</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">app_main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<span class="p">{</span>
-<span class="w">    </span><span class="n">esp_err_t</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
-<span class="w">    </span><span class="n">sdmmc_card_t</span><span class="w"> </span><span class="o">*</span><span class="n">card</span><span class="p">;</span>
-
-<span class="w">    </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Initializing SD card...&quot;</span><span class="p">);</span>
-
-<span class="w">    </span><span class="n">esp_vfs_fat_sdmmc_mount_config_t</span><span class="w"> </span><span class="n">mount_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="p">.</span><span class="n">format_if_mount_failed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span>
-<span class="w">        </span><span class="p">.</span><span class="n">max_files</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
-<span class="w">        </span><span class="p">.</span><span class="n">allocation_unit_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span>
-<span class="w">    </span><span class="p">};</span>
-
+<span class="n">esp_err_t</span><span class="w"> </span><span class="nf">mount_sdcard</span><span class="p">(</span><span class="n">sdmmc_card_t</span><span class="w"> </span><span class="o">**</span><span class="n">card_out</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">sdmmc_host_t</span><span class="w"> </span><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SDSPI_HOST_DEFAULT</span><span class="p">();</span>
+<span class="w">    </span><span class="n">host</span><span class="p">.</span><span class="n">max_freq_khz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4000</span><span class="p">;</span>
 
 <span class="w">    </span><span class="n">spi_bus_config_t</span><span class="w"> </span><span class="n">bus_cfg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="p">.</span><span class="n">mosi_io_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PIN_NUM_MOSI</span><span class="p">,</span>
@@ -764,48 +768,123 @@ Format the Micro SD card to FAT32 before using it with the ESP32-H2.</p>
 <span class="w">        </span><span class="p">.</span><span class="n">max_transfer_sz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4000</span><span class="p">,</span>
 <span class="w">    </span><span class="p">};</span>
 
-<span class="w">    </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spi_bus_initialize</span><span class="p">(</span><span class="n">host</span><span class="p">.</span><span class="n">slot</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bus_cfg</span><span class="p">,</span><span class="w"> </span><span class="n">SDSPI_DEFAULT_DMA</span><span class="p">);</span>
+<span class="w">    </span><span class="n">gpio_set_pull_mode</span><span class="p">(</span><span class="n">PIN_NUM_MISO</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PULLUP_ONLY</span><span class="p">);</span>
+<span class="w">    </span><span class="n">gpio_set_pull_mode</span><span class="p">(</span><span class="n">PIN_NUM_MOSI</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PULLUP_ONLY</span><span class="p">);</span>
+<span class="w">    </span><span class="n">gpio_set_pull_mode</span><span class="p">(</span><span class="n">PIN_NUM_CLK</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PULLUP_ONLY</span><span class="p">);</span>
+<span class="w">    </span><span class="n">gpio_set_pull_mode</span><span class="p">(</span><span class="n">PIN_NUM_CS</span><span class="p">,</span><span class="w"> </span><span class="n">GPIO_PULLUP_ONLY</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">esp_err_t</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spi_bus_initialize</span><span class="p">(</span><span class="n">host</span><span class="p">.</span><span class="n">slot</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bus_cfg</span><span class="p">,</span><span class="w"> </span><span class="n">SDSPI_DEFAULT_DMA</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ESP_ERR_INVALID_STATE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ESP_LOGW</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SPI bus already initialized, attempting to free and reinitialize.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="n">spi_bus_free</span><span class="p">(</span><span class="n">host</span><span class="p">.</span><span class="n">slot</span><span class="p">);</span><span class="w">  </span><span class="c1">// Libera el bus anterior</span>
+<span class="w">        </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">spi_bus_initialize</span><span class="p">(</span><span class="n">host</span><span class="p">.</span><span class="n">slot</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">bus_cfg</span><span class="p">,</span><span class="w"> </span><span class="n">SDSPI_DEFAULT_DMA</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ESP_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">ESP_LOGE</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Failed to init SPI bus.&quot;</span><span class="p">);</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ESP_LOGE</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SPI bus init failed: %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">esp_err_to_name</span><span class="p">(</span><span class="n">ret</span><span class="p">));</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 
 <span class="w">    </span><span class="n">sdspi_device_config_t</span><span class="w"> </span><span class="n">slot_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SDSPI_DEVICE_CONFIG_DEFAULT</span><span class="p">();</span>
 <span class="w">    </span><span class="n">slot_config</span><span class="p">.</span><span class="n">gpio_cs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PIN_NUM_CS</span><span class="p">;</span>
 <span class="w">    </span><span class="n">slot_config</span><span class="p">.</span><span class="n">host_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">host</span><span class="p">.</span><span class="n">slot</span><span class="p">;</span>
 
+<span class="w">    </span><span class="n">esp_vfs_fat_sdmmc_mount_config_t</span><span class="w"> </span><span class="n">mount_config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">.</span><span class="n">format_if_mount_failed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">max_files</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">allocation_unit_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1024</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="n">sdmmc_card_t</span><span class="w"> </span><span class="o">*</span><span class="n">card</span><span class="p">;</span>
 <span class="w">    </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">esp_vfs_fat_sdspi_mount</span><span class="p">(</span><span class="n">MOUNT_POINT</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">host</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">slot_config</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">mount_config</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">card</span><span class="p">);</span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">ret</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ESP_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">ESP_LOGE</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Failed to mount filesystem.&quot;</span><span class="p">);</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ESP_LOGE</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SD mount failed: %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">esp_err_to_name</span><span class="p">(</span><span class="n">ret</span><span class="p">));</span>
+<span class="w">        </span><span class="n">spi_bus_free</span><span class="p">(</span><span class="n">host</span><span class="p">.</span><span class="n">slot</span><span class="p">);</span><span class="w">  </span><span class="c1">// Importante: liberar SPI si falla montaje</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
 <span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Filesystem mounted.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="o">*</span><span class="n">card_out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">card</span><span class="p">;</span>
+<span class="w">    </span><span class="n">sdmmc_card_print_info</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span><span class="w"> </span><span class="n">card</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ESP_OK</span><span class="p">;</span>
+<span class="p">}</span>
 
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">file_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MOUNT_POINT</span><span class="s">&quot;/test.txt&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nb">NULL</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">ESP_LOGE</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Failed to open file for writing.&quot;</span><span class="p">);</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">write_files</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX_FILES</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">path</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+<span class="w">        </span><span class="n">snprintf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">path</span><span class="p">),</span><span class="w"> </span><span class="n">FILE_PREFIX</span><span class="s">&quot;%d.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">safe_fopen</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;w&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">fprintf</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;This is file number %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<span class="w">            </span><span class="n">fflush</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+<span class="w">            </span><span class="n">fclose</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+<span class="w">            </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Wrote %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ESP_LOGE</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Failed to write %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">vTaskDelay</span><span class="p">(</span><span class="mi">10</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">portTICK_PERIOD_MS</span><span class="p">);</span>
 <span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-<span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Hello from ESP32!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
-<span class="w">    </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;File written.&quot;</span><span class="p">);</span>
-
-<span class="w">    </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">line</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
-<span class="w">        </span><span class="n">fgets</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">line</span><span class="p">),</span><span class="w"> </span><span class="n">f</span><span class="p">);</span>
-<span class="w">        </span><span class="n">fclose</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
-<span class="w">        </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Read from file: &#39;%s&#39;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="n">ESP_LOGE</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Failed to read file.&quot;</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">read_files</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MAX_FILES</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">path</span><span class="p">[</span><span class="mi">64</span><span class="p">],</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">128</span><span class="p">];</span>
+<span class="w">        </span><span class="n">snprintf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">path</span><span class="p">),</span><span class="w"> </span><span class="n">FILE_PREFIX</span><span class="s">&quot;%d.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">FILE</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">safe_fopen</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">),</span><span class="w"> </span><span class="n">f</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;[%d] %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">ESP_LOGW</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;File %s is empty or unreadable.&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="n">fclose</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ESP_LOGE</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Failed to read %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">vTaskDelay</span><span class="p">(</span><span class="mi">10</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">portTICK_PERIOD_MS</span><span class="p">);</span>
 <span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 
-<span class="w">    </span><span class="n">esp_vfs_fat_sdcard_unmount</span><span class="p">(</span><span class="n">MOUNT_POINT</span><span class="p">,</span><span class="w"> </span><span class="n">card</span><span class="p">);</span>
-<span class="w">    </span><span class="n">spi_bus_free</span><span class="p">(</span><span class="n">host</span><span class="p">.</span><span class="n">slot</span><span class="p">);</span>
-<span class="w">    </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Card unmounted.&quot;</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">wait_for_button_press</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Waiting for button press (GPIO9) to retry...&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">gpio_get_level</span><span class="p">(</span><span class="n">BTN_PIN</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">vTaskDelay</span><span class="p">(</span><span class="mi">100</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">portTICK_PERIOD_MS</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">gpio_get_level</span><span class="p">(</span><span class="n">BTN_PIN</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">vTaskDelay</span><span class="p">(</span><span class="mi">100</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">portTICK_PERIOD_MS</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">vTaskDelay</span><span class="p">(</span><span class="mi">200</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">portTICK_PERIOD_MS</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">app_main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">gpio_config_t</span><span class="w"> </span><span class="n">io_conf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">.</span><span class="n">pin_bit_mask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1ULL</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">BTN_PIN</span><span class="p">),</span>
+<span class="w">        </span><span class="p">.</span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_MODE_INPUT</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">pull_up_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_PULLUP_ENABLE</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">pull_down_en</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_PULLDOWN_DISABLE</span><span class="p">,</span>
+<span class="w">        </span><span class="p">.</span><span class="n">intr_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">GPIO_INTR_DISABLE</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="n">gpio_config</span><span class="p">(</span><span class="o">&amp;</span><span class="n">io_conf</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">sdmmc_card_t</span><span class="w"> </span><span class="o">*</span><span class="n">card</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Mounting SD card...&quot;</span><span class="p">);</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mount_sdcard</span><span class="p">(</span><span class="o">&amp;</span><span class="n">card</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ESP_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SD card mounted. Starting file operations.&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="n">write_files</span><span class="p">();</span>
+<span class="w">            </span><span class="n">read_files</span><span class="p">();</span>
+<span class="w">            </span><span class="n">esp_vfs_fat_sdcard_unmount</span><span class="p">(</span><span class="n">MOUNT_POINT</span><span class="p">,</span><span class="w"> </span><span class="n">card</span><span class="p">);</span>
+<span class="w">            </span><span class="n">sdmmc_host_t</span><span class="w"> </span><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SDSPI_HOST_DEFAULT</span><span class="p">();</span>
+<span class="w">            </span><span class="n">spi_bus_free</span><span class="p">(</span><span class="n">host</span><span class="p">.</span><span class="n">slot</span><span class="p">);</span>
+<span class="w">            </span><span class="n">ESP_LOGI</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SD card unmounted and SPI bus freed.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ESP_LOGW</span><span class="p">(</span><span class="n">TAG</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Operation aborted due to mount failure.&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">wait_for_button_press</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
