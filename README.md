@@ -21,114 +21,120 @@ The **UNIT PULSAR ESP32 H2** is a cutting-edge development board designed for Io
 
 # PULSAR NANO ESP32-H2
 
-## Descripción
+## Description
 
-La **PULSAR NANO ESP32-H2** es una tarjeta de desarrollo compacta y potente basada en el **ESP32-H2**. Mantiene el **formato Arduino Nano** y la misma **distribución de pines**, facilitando la integración con shields y proyectos existentes.
+The **PULSAR NANO ESP32-H2** is a compact, powerful development board based on the **ESP32-H2**. It keeps the **Arduino Nano** form factor and the same **pin distribution**, making it easy to integrate with existing shields and projects.
 
-Características clave:
-- Radio **Bluetooth 5 (LE)** y **IEEE 802.15.4** para **Thread** y **Zigbee**.
-- Compatible con **Matter over Thread** para ecosistemas de hogar inteligente modernos.
-- Cargador LiPo integrado.
-- Conector **MicroSD** para almacenamiento externo.
-- Conector **QWIIC** para sensores y módulos I²C.
-- **LED Neopixel WS2812-2020** a bordo para retroalimentación visual.
+Key features:
+- **Bluetooth 5 (LE)** and **IEEE 802.15.4** radio for **Thread** and **Zigbee**.
+- **Matter over Thread** support for modern smart-home ecosystems.
+- Onboard **LiPo charger**.
+- **MicroSD** card socket for external storage.
+- **QWIIC** connector for plug-and-play I²C sensors/modules.
+- Onboard **WS2812-2020 Neopixel** LED for visual feedback.
 
-> **Nota:** El **ESP32-H2 no incluye Wi-Fi**. Para escenarios con backhaul Wi-Fi/Ethernet (p. ej., *border router*), empareja esta placa con un dispositivo complementario que provea esa conectividad.
+> **Note:** The **ESP32-H2 does not include Wi-Fi**. For Wi-Fi/Ethernet backhaul (e.g., border-router scenarios), pair this board with a companion device that provides that connectivity.
 
 ---
 
-## Características
+## Features
 
-- **Microcontrolador**
-  - **ESP32-H2** (RISC-V, 2.4 GHz): **Bluetooth 5 (LE)** y **IEEE 802.15.4** para **Thread** y **Zigbee**.
-  - Soporte para **Matter over Thread**.
-  - Cumplimiento **IEEE 802.15.4** para redes malladas de baja potencia.
+- **Microcontroller**
+  - **ESP32-H2** (RISC-V, 2.4 GHz): **Bluetooth 5 (LE)** and **IEEE 802.15.4** for **Thread/Zigbee**.
+  - **Matter over Thread** capable.
+  - **IEEE 802.15.4** compliant for robust, low-power mesh networking.
 
-- **Conectividad USB**
-  - **USB Type-C** para alimentación y datos.
+- **USB Connectivity**
+  - **USB Type-C** for power and data.
 
-- **Alimentación**
-  - Circuito integrado de **carga LiPo**.
-  - Regulación a bordo con **amplio rango de entrada**.
+- **Power**
+  - Integrated **LiPo charging** circuit.
+  - Onboard regulation with **wide input range**.
 
-- **Almacenamiento**
-  - **Ranura MicroSD** para memoria externa.
+- **Storage**
+  - **MicroSD** slot for external storage.
 
-- **Conectividad I²C**
-  - **Conector QWIIC** para expansión sencilla con sensores/periféricos.
+- **I²C Expansion**
+  - **QWIIC** connector for easy sensor/peripheral expansion.
 
 - **Extras**
-  - **Neopixel WS2812-2020** integrado.
-  - Compatibilidad total con **formato Arduino Nano** y shields.
+  - **WS2812-2020 Neopixel** status LED.
+  - Full compatibility with **Arduino Nano** shields/form factor.
 
 ---
 
-## Aplicaciones
+## Applications
 
-Ideal para:
-- **Hogar inteligente y automatización:** interoperabilidad amplia con **Matter over Thread** y Zigbee.
-- **Redes malladas de baja potencia:** **Thread/Zigbee** sobre IEEE 802.15.4.
-- **Dispositivos IoT finales:** Comisión por **BLE** + operación confiable en 802.15.4.
-- **Educación y prototipado:** factor de forma **Arduino Nano**.
-- **Sistemas embebidos:** tamaño compacto y bajo consumo.
-
----
-
-## Primeros pasos
-
-La **PULSAR NANO ESP32-H2** soporta:
-- **Arduino IDE** con soporte de placas **ESP32-H2** (Arduino-ESP32 3.x o superior).
-- **ESP-IDF** (recomendado para proyectos **Thread/Zigbee/Matter**).
-- **MicroPython** (los builds para H2 pueden variar según la comunidad).
-
-Guías y documentación (H2):
-- **Guía de Inicio (H2):** `https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2/`  
-- **Repositorio (H2):** `https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_h2`
-
-> Actualiza las URLs si tu repositorio/página difiere.
+Ideal for:
+- **Smart Home & Automation:** broad interoperability via **Matter over Thread** and Zigbee.
+- **Low-Power Mesh Networks:** **Thread/Zigbee** over 802.15.4.
+- **IoT End Devices:** BLE commissioning + reliable local networking on 802.15.4.
+- **Education & Prototyping:** familiar **Arduino Nano** footprint.
+- **Embedded Systems:** compact size and low power.
 
 ---
 
-## Pinout y Esquemático
+## Getting Started
 
-### Diagrama de pines
+The **PULSAR NANO ESP32-H2** supports:
+- **Arduino IDE** with **ESP32-H2** board support (Arduino-ESP32 **3.x or later**).
+- **ESP-IDF** (recommended for **Thread/Zigbee/Matter** projects).
+- **MicroPython** (community builds for H2 may vary).
+
+H2 documentation:
+- **Getting Started (H2):** `https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2/`  
+- **Repository (H2):** `https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_h2`
+
+> Update the URLs above if your repo/docs use different paths.
+
+---
+
+## Pinout and Schematic
+
+### Pinout Diagram
 ![PULSAR NANO H2 Pinout](hardware/resources/Pulsar-H2-Pinout_EN.jpg)
 
-### Esquemático
-Consulta la carpeta **hardware/** para el diseño detallado (BOM, esquemáticos y mecánicos).
+### Schematic
+See the **hardware/** folder for detailed design files (BOM, schematics, and mechanicals).
 
 ---
 
-## Recursos de desarrollo
+## Development Resources
 
-| Recurso                                      | Enlace                                                                                          |
-|----------------------------------------------|--------------------------------------------------------------------------------------------------|
-| **Arduino Package (ESP32 Series)**           | https://github.com/UNIT-Electronics/Uelectronics-ESP32-Arduino-Package                         |
-| **ESP-IDF (ESP32-H2)**                       | https://docs.espressif.com/projects/esp-idf/en/latest/esp32h2/                                  |
-| **PULSAR NANO H2 – Documentación**           | https://wiki.uelectronics.com/wiki/pulsar-h2                                      |
-| **Guía de Inicio – PULSAR NANO H2**          | https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2                                      |
-| **MicroPython**                               | https://micropython.org/                                                                         |
-| **Arduino IDE**                               | https://www.arduino.cc/en/software                                                               |
-| **Visual Studio Code**                       | https://code.visualstudio.com/download                                                           |
-| **ESP32-H2 – Recursos/Datasheet**            | https://www.espressif.com/en/products/socs/esp32-h2/resources                                    |
+| Resource                                   | Link                                                                                          |
+|--------------------------------------------|-----------------------------------------------------------------------------------------------|
+| **Arduino Package (ESP32 Series)**         | https://github.com/UNIT-Electronics/Uelectronics-ESP32-Arduino-Package                       |
+| **ESP-IDF (ESP32-H2)**                     | https://docs.espressif.com/projects/esp-idf/en/latest/esp32h2/                                |
+| **PULSAR NANO H2 – Documentation**         | https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_h2                                   |
+| **Getting Started – PULSAR NANO H2**       | https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2/                                   |
+| **MicroPython**                            | https://micropython.org/                                                                       |
+| **Arduino IDE**                            | https://www.arduino.cc/en/software                                                             |
+| **Visual Studio Code**                     | https://code.visualstudio.com/download                                                         |
+| **ESP32-H2 – Resources/Datasheet**         | https://www.espressif.com/en/products/socs/esp32-h2/resources                                  |
 
-> Para ejemplos de **Thread/Zigbee/Matter**, usa componentes de ESP-IDF (OpenThread, Zigbee) y las integraciones de Matter de Espressif.
+> For **Thread/Zigbee/Matter** examples, use ESP-IDF components (OpenThread, Zigbee) and Espressif’s Matter integrations.
 
 ---
 
-## Ejemplos (sugeridos)
+## Suggested Examples
 
-- **BLE (LE) periférico/escáner**
+- **BLE (LE) peripheral/scanner**
 - **Thread end-device (OpenThread)**
-- **Zigbee (sensor/actuador)**
-- **Lectura/escritura MicroSD**
-- **Demos QWIIC/I²C**
-- **Indicadores con Neopixel**
+- **Zigbee sensor/actuator**
+- **MicroSD read/write**
+- **QWIIC/I²C sensor demos**
+- **Neopixel status indicators**
 
-> Coloca los proyectos en `/examples` (Arduino y ESP-IDF).
+> Place Arduino sketches and ESP-IDF projects under `/examples`.
 
 ---
 
-## Licencia
+## Contributions
 
-Este proyecto se distribuye bajo la [Licencia MIT](LICENSE).
+Contributions are welcome! Please review the [Contribution Guidelines](CONTRIBUTING.md) before opening pull requests.
+
+---
+
+## License
+
+This project is released under the [MIT License](LICENSE).
