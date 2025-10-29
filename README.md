@@ -83,9 +83,6 @@ The **PULSAR NANO ESP32-H2** supports:
 
 H2 documentation:
 - **Getting Started (H2):** `https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2/`  
-- **Repository (H2):** `https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_h2`
-
-> Update the URLs above if your repo/docs use different paths.
 
 ---
 
@@ -105,7 +102,7 @@ See the **hardware/** folder for detailed design files (BOM, schematics, and mec
 |--------------------------------------------|-----------------------------------------------------------------------------------------------|
 | **Arduino Package (ESP32 Series)**         | https://github.com/UNIT-Electronics/Uelectronics-ESP32-Arduino-Package                       |
 | **ESP-IDF (ESP32-H2)**                     | https://docs.espressif.com/projects/esp-idf/en/latest/esp32h2/                                |
-| **PULSAR NANO H2 – Documentation**         | https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_h2                                   |
+| **PULSAR NANO H2 – Documentation**         | https://wiki.uelectronics.com/wiki/pulsar-h2                                   |
 | **Getting Started – PULSAR NANO H2**       | https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2/                                   |
 | **MicroPython**                            | https://micropython.org/                                                                       |
 | **Arduino IDE**                            | https://www.arduino.cc/en/software                                                             |
@@ -126,12 +123,6 @@ See the **hardware/** folder for detailed design files (BOM, schematics, and mec
 - **Neopixel status indicators**
 
 > Place Arduino sketches and ESP-IDF projects under `/examples`.
-
----
-
-## Contributions
-
-Contributions are welcome! Please review the [Contribution Guidelines](CONTRIBUTING.md) before opening pull requests.
 
 ---
 
