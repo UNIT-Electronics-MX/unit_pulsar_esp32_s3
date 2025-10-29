@@ -12,10 +12,10 @@ The **UNIT PULSAR ESP32 H2** is a cutting-edge development board designed for Io
 
 ### Quick Setup
 
-[<img src="https://img.shields.io/badge/Product%20Wiki-blue?style=for-the-badge" alt="Product Wiki">](#)
-[<img src="https://img.shields.io/badge/Datasheet-green?style=for-the-badge" alt="Datasheet">](#)
+[<img src="https://img.shields.io/badge/Product%20Wiki-blue?style=for-the-badge" alt="Product Wiki">](https://wiki.uelectronics.com/wiki/pulsar-h2)
+[<img src="https://img.shields.io/badge/Datasheet-green?style=for-the-badge" alt="Datasheet">](https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_h2/blob/main/PULSAR-ESP32-H2(Product%20Reference%20Manual)%5BEN%5D.pdf)
 [<img src="https://img.shields.io/badge/Buy%20Now-orange?style=for-the-badge" alt="Buy Now">](https://uelectronics.com/)
-[<img src="https://img.shields.io/badge/Getting%20Started-purple?style=for-the-badge" alt="Getting Started">](#)
+[<img src="https://img.shields.io/badge/Getting%20Started-purple?style=for-the-badge" alt="Getting Started">](https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2/)
 
 </div>
 
