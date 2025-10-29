@@ -4,7 +4,7 @@
 The **UNIT PULSAR ESP32 H2** is a cutting-edge development board designed for IoT applications, leveraging the powerful ESP32 H2 microcontroller.  Inspired by the arduino nano form factor, this board is perfect for developers looking to create compact and efficient solutions.
 
 <div align="center">
-    <img src="hardware/resources/IMG_7740.jpg" alt="UNIT PULSAR ESP32 H2 V1.0.0" width="100"/>
+    <img src="hardware/resources/IMG_7740.jpg" alt="UNIT PULSAR ESP32 H2 V1.0.0" width="600"/>
 </div>
 
 
