@@ -86,16 +86,6 @@ H2 documentation:
 
 ---
 
-## Pinout and Schematic
-
-### Pinout Diagram
-![PULSAR NANO H2 Pinout](hardware/resources/Pulsar-H2-Pinout_EN.jpg)
-
-### Schematic
-See the **hardware/** folder for detailed design files (BOM, schematics, and mechanicals).
-
----
-
 ## Development Resources
 
 | Resource                                   | Link                                                                                          |
