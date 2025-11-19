@@ -14,7 +14,7 @@
 
 # Pinout
 
-<img src="resources/unit_pinout_v_0_0_1_ue0071_pulsar_h2.jpg?raw=false" width="1000px"><br/>
+<img src="resources/unit_pinout_v_0_0_1_ue0071_pulsar_h2.png?raw=false" width="1000px"><br/>
 
 
 
