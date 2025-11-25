@@ -48,6 +48,14 @@ jobs:
       env:
         REPO_NAME: ${{ github.event.repository.name }}
       run: |
+        # Backup hardware documentation if it exists
+        if [ -d "docs/hardware" ]; then
+          echo "Backing up hardware documentation..."
+          mv docs/hardware /tmp/hardware_backup
+          mv docs/hardware.html /tmp/hardware.html.backup 2>/dev/null || true
+        fi
+        
+        # Clean docs/ directory (except hardware)
         rm -rf docs
         mkdir -p docs
 
@@ -62,6 +70,13 @@ jobs:
         # HTML generado por Sphinx
         cp -r software/sphinx/docs/* docs/
 
+        # Restore hardware documentation if it was backed up
+        if [ -d "/tmp/hardware_backup" ]; then
+          echo "Restoring hardware documentation..."
+          mv /tmp/hardware_backup docs/hardware
+          mv /tmp/hardware.html.backup docs/hardware.html 2>/dev/null || true
+        fi
+
         # Permitir archivos especiales en GitHub Pages
         touch docs/.nojekyll
 
@@ -73,7 +88,36 @@ jobs:
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        git pull origin main
+        
+        # Check if there are changes to commit
         git add docs/
-        git commit -m "Deploy full documentation and product brief [skip ci]" || echo "No changes"
-        git push origin main
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+          exit 0
+        fi
+        
+        # Commit changes
+        git commit -m "Deploy full documentation and product brief [skip ci]"
+        
+        # Try to push, if fails pull and retry
+        max_retries=3
+        for i in $(seq 1 $max_retries); do
+          if git push origin main; then
+            echo "Successfully pushed!"
+            exit 0
+          fi
+          
+          echo "Push failed, attempt $i of $max_retries"
+          echo "Pulling latest changes..."
+          
+          # Pull with merge strategy
+          git pull --no-rebase --no-edit origin main || {
+            echo "Pull failed, forcing merge with ours strategy for docs/"
+            git checkout --ours docs/
+            git add docs/
+            git commit -m "Merge: Resolve conflicts keeping our docs/ [skip ci]" || true
+          }
+        done
+        
+        echo "Failed to push after $max_retries attempts"
+        exit 1
