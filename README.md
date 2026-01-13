@@ -1,10 +1,10 @@
-# UNIT PULSAR ESP32 H2 Development Board
+# UNIT PULSAR ESP32 S3 Development Board
 
 
-The **UNIT PULSAR ESP32 H2** is a cutting-edge development board designed for IoT applications, leveraging the powerful ESP32 H2 microcontroller.  Inspired by the arduino nano form factor, this board is perfect for developers looking to create compact and efficient solutions.
+The **UNIT PULSAR ESP32 S3** is a cutting-edge development board designed for IoT applications, leveraging the powerful ESP32 S3 microcontroller.  Inspired by the arduino nano form factor, this board is perfect for developers looking to create compact and efficient solutions.
 
 <div align="center">
-    <img src="hardware/resources/IMG_7740.jpg" alt="UNIT PULSAR ESP32 H2 V1.0.0" width="600"/>
+    <img src="hardware/resources/IMG_7740.jpg" alt="UNIT PULSAR ESP32 S3 V1.0.0" width="600"/>
 </div>
 
 
@@ -13,17 +13,17 @@ The **UNIT PULSAR ESP32 H2** is a cutting-edge development board designed for Io
 ### Quick Setup
 
 [<img src="https://img.shields.io/badge/Product%20Wiki-blue?style=for-the-badge" alt="Product Wiki">](https://wiki.uelectronics.com/wiki/pulsar-h2)
-[<img src="https://img.shields.io/badge/Datasheet-green?style=for-the-badge" alt="Datasheet">](https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_h2/blob/main/PULSAR-ESP32-H2(Product%20Reference%20Manual)%5BEN%5D.pdf)
+[<img src="https://img.shields.io/badge/Datasheet-green?style=for-the-badge" alt="Datasheet">](https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_h2/blob/main/PULSAR-ESP32-S3(Product%20Reference%20Manual)%5BEN%5D.pdf)
 [<img src="https://img.shields.io/badge/Buy%20Now-orange?style=for-the-badge" alt="Buy Now">](https://uelectronics.com/producto/pulsar-esp32-h2-ble5-thread-zigbee-unit-devlab/)
 [<img src="https://img.shields.io/badge/Getting%20Started-purple?style=for-the-badge" alt="Getting Started">](https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2/)
 
 </div>
 
-# PULSAR NANO ESP32-H2
+# PULSAR NANO ESP32-S3
 
 ## Description
 
-The **PULSAR NANO ESP32-H2** is a compact, powerful development board based on the **ESP32-H2**. It keeps the **Arduino Nano** form factor and the same **pin distribution**, making it easy to integrate with existing shields and projects.
+The **PULSAR NANO ESP32-S3** is a compact, powerful development board based on the **ESP32-S3**. It keeps the **Arduino Nano** form factor and the same **pin distribution**, making it easy to integrate with existing shields and projects.
 
 Key features:
 - **Bluetooth 5 (LE)** and **IEEE 802.15.4** radio for **Thread** and **Zigbee**.
@@ -33,14 +33,13 @@ Key features:
 - **QWIIC** connector for plug-and-play I²C sensors/modules.
 - Onboard **WS2812-2020 Neopixel** LED for visual feedback.
 
-> **Note:** The **ESP32-H2 does not include Wi-Fi**. For Wi-Fi/Ethernet backhaul (e.g., border-router scenarios), pair this board with a companion device that provides that connectivity.
 
 ---
 
 ## Features
 
 - **Microcontroller**
-  - **ESP32-H2** (RISC-V, 2.4 GHz): **Bluetooth 5 (LE)** and **IEEE 802.15.4** for **Thread/Zigbee**.
+  - **ESP32-S3** (RISC-V, 2.4 GHz): **Bluetooth 5 (LE)** and **IEEE 802.15.4** for **Thread/Zigbee**.
   - **Matter over Thread** capable.
   - **IEEE 802.15.4** compliant for robust, low-power mesh networking.
 
@@ -76,13 +75,13 @@ Ideal for:
 
 ## Getting Started
 
-The **PULSAR NANO ESP32-H2** supports:
-- **Arduino IDE** with **ESP32-H2** board support (Arduino-ESP32 **3.x or later**).
+The **PULSAR NANO ESP32-S3** supports:
+- **Arduino IDE** with **ESP32-S3** board support (Arduino-ESP32 **3.x or later**).
 - **ESP-IDF** (recommended for **Thread/Zigbee/Matter** projects).
-- **MicroPython** (community builds for H2 may vary).
+- **MicroPython** (community builds for S3 may vary).
 
-H2 documentation:
-- **Getting Started (H2):** `https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2/`  
+S3 documentation:
+- **Getting Started (S3):** `https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2/`  
 
 ---
 
@@ -91,13 +90,13 @@ H2 documentation:
 | Resource                                   | Link                                                                                          |
 |--------------------------------------------|-----------------------------------------------------------------------------------------------|
 | **Arduino Package (ESP32 Series)**         | https://github.com/UNIT-Electronics/Uelectronics-ESP32-Arduino-Package                       |
-| **ESP-IDF (ESP32-H2)**                     | https://docs.espressif.com/projects/esp-idf/en/latest/esp32h2/                                |
-| **PULSAR NANO H2 – Documentation**         | https://wiki.uelectronics.com/wiki/pulsar-h2                                   |
-| **Getting Started – PULSAR NANO H2**       | https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2/                                   |
+| **ESP-IDF (ESP32-S3)**                     | https://docs.espressif.com/projects/esp-idf/en/latest/esp32h2/                                |
+| **PULSAR NANO S3 – Documentation**         | https://wiki.uelectronics.com/wiki/pulsar-h2                                   |
+| **Getting Started – PULSAR NANO S3**       | https://unit-electronics-mx.github.io/unit_pulsar_esp32_h2/                                   |
 | **MicroPython**                            | https://micropython.org/                                                                       |
 | **Arduino IDE**                            | https://www.arduino.cc/en/software                                                             |
 | **Visual Studio Code**                     | https://code.visualstudio.com/download                                                         |
-| **ESP32-H2 – Resources/Datasheet**         | https://www.espressif.com/en/products/socs/esp32-h2/resources                                  |
+| **ESP32-S3 – Resources/Datasheet**         | https://www.espressif.com/en/products/socs/esp32-h2/resources                                  |
 
 > For **Thread/Zigbee/Matter** examples, use ESP-IDF components (OpenThread, Zigbee) and Espressif’s Matter integrations.
 

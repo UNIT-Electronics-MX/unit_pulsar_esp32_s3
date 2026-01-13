@@ -1,30 +1,45 @@
 
-# Hadware [PULSAR ESP32-H2](https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_h2/) 
+# Hadware [PULSAR ESP32-S3](https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_s3/) 
 
+<div align="center">
+    <a href="https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_S3/blob/main/hardware/SCHEMATICS_PULSAR_S3_V1.pdf"><img src="resources/Schematics_icon.jpg?raw=false" width="500px"><br/>Schematics</a>
+    <br/>
 
-<a href="https://github.com/UNIT-Electronics-MX/unit_pulsar_esp32_h2/blob/main/hardware/SCHEMATICS_PULSAR_H2_V1.pdf"><img src="resources/Schematics_icon.jpg?raw=false" width="500px"><br/> Schematics</a>
+</div>
 
 # Power Tree
 
-<img src="resources/PowerTree.png?raw=false" width="1000px"><br/>
+<div align="center">
+    <img src="resources/PowerTree.png?raw=false" width="1000px"><br/>
+</div>
 
 # Block Diagram
 
-<img src="resources/BlockDiagram.png?raw=false" width="800px"><br/>
+<div align="center">
+    <img src="resources/BlockDiagram.png?raw=false" width="800px"><br/>
+</div>
+
 
 # Pinout
 
-<img src="resources/unit_pinout_v_0_0_1_ue0071_pulsar_h2.png?raw=false" width="1000px"><br/>
+<div align="center">
+    <img src="resources/unit_pinout_v_0_0_1_ue0071_pulsar_s3.png?raw=false" width="1000px"><br/>
+
+</div>
 
 
 
 # Board Topology
 
-<img src="resources/unit_topology_v_1_0_0_ue0071.png?raw=false" width="800px"><br/>
+<div align="center">
+    <img src="resources/unit_topology_v_1_0_0_ue0071.png?raw=false" width="800px"><br/>
+</div>
+
+<div align="center">
 
 | Ref.  | Description                                                                 |
 |-------|-----------------------------------------------------------------------------|
-| U1    | Espressif ESP32-H2FH4                                                      |
+| U1    | Espressif ESP32-S3FH4                                                      |
 | U2    | AP2112K 3.3V LDO Voltage Regulator                                          |
 | U3    | MCP73831 Battery Charge Management IC                                      |
 | A1    | SMD Antenna                                                                |
@@ -39,6 +54,7 @@
 | JP1   | Micro SD Card Socket                                                       |
 | JP2   | 2.0 mm or 1.25 mm Pitch Battery Connector                                   |
 | JP3   | JP3-1, JP3-2: Female Castelled Headers 2.54 mm, compatible with Arduino Nano Pinout |
+</div>
 
 
 
